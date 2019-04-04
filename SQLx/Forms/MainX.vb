@@ -9,7 +9,7 @@ Public Class MainX
 	Dim pendingRefresh As Boolean = False
 
 	Private Sub MainX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-		'Me.Icon =
+		Me.Icon = My.Resources.database
 		Me.Text = "SQLx [Build Date: " & My.Computer.FileSystem.GetFileInfo(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName).LastWriteTimeUtc.ToString("yyyy-MM-dd HH:mm:ss") & " UTC]"
 
 		Buff.DoubleBuff(DgData)
