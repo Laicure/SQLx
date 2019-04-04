@@ -378,7 +378,7 @@ Partial Class MainX
 		Me.Label9.Location = New System.Drawing.Point(0, 0)
 		Me.Label9.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label9.Name = "Label9"
-		Me.Label9.Size = New System.Drawing.Size(533, 21)
+		Me.Label9.Size = New System.Drawing.Size(558, 21)
 		Me.Label9.TabIndex = 6
 		Me.Label9.Text = "Query ⤵"
 		Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -390,10 +390,10 @@ Partial Class MainX
 		Me.LbExecute.Cursor = System.Windows.Forms.Cursors.Hand
 		Me.LbExecute.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbExecute.ForeColor = System.Drawing.Color.Blue
-		Me.LbExecute.Location = New System.Drawing.Point(532, 0)
+		Me.LbExecute.Location = New System.Drawing.Point(557, 0)
 		Me.LbExecute.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbExecute.Name = "LbExecute"
-		Me.LbExecute.Size = New System.Drawing.Size(100, 21)
+		Me.LbExecute.Size = New System.Drawing.Size(75, 21)
 		Me.LbExecute.TabIndex = 9
 		Me.LbExecute.Text = "Execute"
 		Me.LbExecute.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -411,9 +411,9 @@ Partial Class MainX
 		'
 		'Panel2
 		'
+		Me.Panel2.Controls.Add(Me.LbDataCount)
 		Me.Panel2.Controls.Add(Me.LbExport)
 		Me.Panel2.Controls.Add(Me.Label10)
-		Me.Panel2.Controls.Add(Me.LbDataCount)
 		Me.Panel2.Dock = System.Windows.Forms.DockStyle.Top
 		Me.Panel2.Location = New System.Drawing.Point(0, 0)
 		Me.Panel2.Margin = New System.Windows.Forms.Padding(0)
@@ -428,7 +428,7 @@ Partial Class MainX
 		Me.LbExport.Cursor = System.Windows.Forms.Cursors.Hand
 		Me.LbExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbExport.ForeColor = System.Drawing.Color.Blue
-		Me.LbExport.Location = New System.Drawing.Point(458, 0)
+		Me.LbExport.Location = New System.Drawing.Point(557, 0)
 		Me.LbExport.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbExport.Name = "LbExport"
 		Me.LbExport.Size = New System.Drawing.Size(75, 22)
@@ -442,7 +442,7 @@ Partial Class MainX
 			Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
 		Me.Label10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.Label10.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label10.Location = New System.Drawing.Point(0, 0)
+		Me.Label10.Location = New System.Drawing.Point(99, 0)
 		Me.Label10.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label10.Name = "Label10"
 		Me.Label10.Size = New System.Drawing.Size(459, 22)
@@ -452,10 +452,10 @@ Partial Class MainX
 		'
 		'LbDataCount
 		'
-		Me.LbDataCount.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+		Me.LbDataCount.AutoEllipsis = True
 		Me.LbDataCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.LbDataCount.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.LbDataCount.Location = New System.Drawing.Point(532, 0)
+		Me.LbDataCount.Location = New System.Drawing.Point(0, 0)
 		Me.LbDataCount.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbDataCount.Name = "LbDataCount"
 		Me.LbDataCount.Size = New System.Drawing.Size(100, 22)
