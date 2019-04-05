@@ -431,7 +431,7 @@ Partial Class MainX
 		Me.LbDataCount.Name = "LbDataCount"
 		Me.LbDataCount.Size = New System.Drawing.Size(100, 22)
 		Me.LbDataCount.TabIndex = 11
-		Me.LbDataCount.Text = "<row count>"
+		Me.LbDataCount.Text = "-"
 		Me.LbDataCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'LbExport
