@@ -53,30 +53,6 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property LastServerUsed() As String
-            Get
-                Return CType(Me("LastServerUsed"),String)
-            End Get
-            Set
-                Me("LastServerUsed") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property LastQueryUsed() As String
-            Get
-                Return CType(Me("LastQueryUsed"),String)
-            End Get
-            Set
-                Me("LastQueryUsed") = value
-            End Set
-        End Property
     End Class
 End Namespace
 

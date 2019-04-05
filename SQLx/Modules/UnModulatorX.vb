@@ -32,15 +32,15 @@ Module UnModulatorX
 			dr = dtxx.Rows(r)
 			For c As Integer = 0 To dtxx.Columns.Count - 1
 				If Not IsDBNull(dr(c)) Then
-					If dr(c).GetType = GetType(Date) Then
-						arrX(r, c) = Format(dr(c), "yyyy-MM-dd HH:mm:ss").ToString
-					Else
-						If IsNumeric(dr(c)) = True Then
-							arrX(r, c) = dr(c)
-						Else
-							arrX(r, c) = dr(c).ToString.Replace(vbCrLf, " ").Replace(vbCr, " ").Replace(vbLf, " ").Replace(vbTab, " ")
-						End If
-					End If
+					'If dr(c).GetType = GetType(Date) Then
+					'	arrX(r, c) = Format(dr(c), "yyyy-MM-dd HH:mm:ss").ToString
+					'Else
+					'	If IsNumeric(dr(c)) = True Then
+					'		arrX(r, c) = dr(c)
+					'	Else
+					arrX(r, c) = dr(c).ToString.Replace(vbCrLf, " ").Replace(vbCr, " ").Replace(vbLf, " ").Replace(vbTab, " ")
+					'	End If
+					'End If
 				Else
 					arrX(r, c) = "-"
 				End If

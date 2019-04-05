@@ -23,10 +23,6 @@ Public Class MainX
 		'set strings
 		Username = Environment.UserName
 		Domain = Environment.UserDomainName
-		With My.Settings
-			TxServerName.Text = .LastServerUsed
-			TxQuery.Text = .LastQueryUsed
-		End With
 
 		CbAuthentication.SelectedIndex = 0
 	End Sub
@@ -101,7 +97,6 @@ Public Class MainX
 	End Sub
 
 	Private Sub bgTryConnect_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BgTryConnect.DoWork
-		Threading.Thread.Sleep(500)
 		Try
 			Using tryCon As New SqlClient.SqlConnection(e.Argument.ToString)
 				tryCon.Open()
@@ -138,11 +133,6 @@ Public Class MainX
 			With LbStatus
 				.Text = "<< Connected >>"
 				.ForeColor = Color.Green
-			End With
-
-			With My.Settings
-				.LastServerUsed = TxServerName.Text
-				.Save()
 			End With
 
 			If Not BGgetDetails.IsBusy Then
@@ -283,11 +273,6 @@ Public Class MainX
 		Else
 			ExecuteBSData.DataSource = ExecuteData
 			ExecuteBSData.EndEdit()
-
-			With My.Settings
-				.LastQueryUsed = TxQuery.Text.Trim
-				.Save()
-			End With
 		End If
 		LbDataCount.Text = ExecuteData.Rows.Count.ToString("#,0")
 	End Sub
