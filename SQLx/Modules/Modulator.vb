@@ -48,7 +48,7 @@
 			.BackColor = Color.White
 			.ForeColor = Color.Black
 			.DefaultCellStyle.BackColor = Color.White
-			.AlternatingRowsDefaultCellStyle.BackColor = Color.MintCream
+			.AlternatingRowsDefaultCellStyle.BackColor = Color.Honeydew
 			.GridColor = Color.Brown
 			.ReadOnly = True
 			.TabStop = False
