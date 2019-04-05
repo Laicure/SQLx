@@ -177,6 +177,7 @@ Partial Class MainX
 		Me.LbConnect.Cursor = System.Windows.Forms.Cursors.Hand
 		Me.LbConnect.Enabled = False
 		Me.LbConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.LbConnect.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.LbConnect.ForeColor = System.Drawing.Color.Blue
 		Me.LbConnect.Location = New System.Drawing.Point(0, 105)
 		Me.LbConnect.Margin = New System.Windows.Forms.Padding(0)
@@ -389,6 +390,7 @@ Partial Class MainX
 		Me.LbExecute.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.LbExecute.Cursor = System.Windows.Forms.Cursors.Hand
 		Me.LbExecute.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.LbExecute.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.LbExecute.ForeColor = System.Drawing.Color.Blue
 		Me.LbExecute.Location = New System.Drawing.Point(557, 0)
 		Me.LbExecute.Margin = New System.Windows.Forms.Padding(0)
@@ -440,6 +442,7 @@ Partial Class MainX
 		Me.LbExport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.LbExport.Cursor = System.Windows.Forms.Cursors.Hand
 		Me.LbExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.LbExport.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.LbExport.ForeColor = System.Drawing.Color.Blue
 		Me.LbExport.Location = New System.Drawing.Point(557, 0)
 		Me.LbExport.Margin = New System.Windows.Forms.Padding(0)
