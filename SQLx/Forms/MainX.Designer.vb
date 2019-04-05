@@ -49,9 +49,9 @@ Partial Class MainX
 		Me.LbExecute = New System.Windows.Forms.Label()
 		Me.DgData = New System.Windows.Forms.DataGridView()
 		Me.Panel2 = New System.Windows.Forms.Panel()
+		Me.LbDataCount = New System.Windows.Forms.Label()
 		Me.LbExport = New System.Windows.Forms.Label()
 		Me.Label10 = New System.Windows.Forms.Label()
-		Me.LbDataCount = New System.Windows.Forms.Label()
 		Me.BgExecute = New System.ComponentModel.BackgroundWorker()
 		Me.BgExport = New System.ComponentModel.BackgroundWorker()
 		Me.FdBrowse = New System.Windows.Forms.FolderBrowserDialog()
@@ -421,6 +421,19 @@ Partial Class MainX
 		Me.Panel2.Size = New System.Drawing.Size(632, 22)
 		Me.Panel2.TabIndex = 12
 		'
+		'LbDataCount
+		'
+		Me.LbDataCount.AutoEllipsis = True
+		Me.LbDataCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LbDataCount.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.LbDataCount.Location = New System.Drawing.Point(0, 0)
+		Me.LbDataCount.Margin = New System.Windows.Forms.Padding(0)
+		Me.LbDataCount.Name = "LbDataCount"
+		Me.LbDataCount.Size = New System.Drawing.Size(100, 22)
+		Me.LbDataCount.TabIndex = 11
+		Me.LbDataCount.Text = "<row count>"
+		Me.LbDataCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		'
 		'LbExport
 		'
 		Me.LbExport.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -449,19 +462,6 @@ Partial Class MainX
 		Me.Label10.TabIndex = 8
 		Me.Label10.Text = "Data ⤵"
 		Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-		'
-		'LbDataCount
-		'
-		Me.LbDataCount.AutoEllipsis = True
-		Me.LbDataCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.LbDataCount.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.LbDataCount.Location = New System.Drawing.Point(0, 0)
-		Me.LbDataCount.Margin = New System.Windows.Forms.Padding(0)
-		Me.LbDataCount.Name = "LbDataCount"
-		Me.LbDataCount.Size = New System.Drawing.Size(100, 22)
-		Me.LbDataCount.TabIndex = 11
-		Me.LbDataCount.Text = "<row count>"
-		Me.LbDataCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'BgExecute
 		'

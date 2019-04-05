@@ -2,6 +2,8 @@
 
 Public Class MainX
 	Dim errx() As String = {}
+	Friend selectedDatabase As String = ""
+	Friend selectedTable As String = ""
 	Dim ExecuteData As New DataTable
 	Dim ExecuteBSData As New BindingSource
 	Dim DatabaseList() As String = {}
@@ -12,7 +14,6 @@ Public Class MainX
 		Me.Icon = My.Resources.database
 		Me.Text = "SQLx [Build Date: " & My.Computer.FileSystem.GetFileInfo(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName).LastWriteTimeUtc.ToString("yyyy-MM-dd HH:mm:ss") & " UTC]"
 
-		Buff.DoubleBuff(DgData)
 		ApplyDataGridViewProperties(DgData)
 		DgData.DataSource = ExecuteBSData
 
@@ -207,7 +208,18 @@ Public Class MainX
 
 	Private Sub LBoxDatabase_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LBoxDatabase.SelectedIndexChanged
 		If LBoxDatabase.SelectedIndex >= 0 Then
-			BGgetDetails.RunWorkerAsync(LBoxDatabase.GetItemText(LBoxDatabase.SelectedItem))
+			selectedDatabase = LBoxDatabase.GetItemText(LBoxDatabase.SelectedItem)
+			BGgetDetails.RunWorkerAsync(selectedDatabase)
+		Else
+			selectedDatabase = ""
+		End If
+	End Sub
+
+	Private Sub LBoxTable_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LBoxTable.SelectedIndexChanged
+		If LBoxTable.SelectedIndex >= 0 Then
+			selectedTable = LBoxTable.GetItemText(LBoxTable.SelectedItem)
+		Else
+			selectedTable = ""
 		End If
 	End Sub
 
@@ -242,7 +254,7 @@ Public Class MainX
 		LbExecute.Enabled = False
 		TxQuery.ReadOnly = True
 		LbDataCount.Text = "Loading..."
-		BgExecute.RunWorkerAsync({TxQuery.Text.Trim, LBoxDatabase.GetItemText(LBoxDatabase.SelectedItem)})
+		BgExecute.RunWorkerAsync({TxQuery.Text.Trim, selectedDatabase})
 	End Sub
 
 	Private Sub BgExecute_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BgExecute.DoWork
