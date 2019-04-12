@@ -6,4 +6,4 @@ Portable SQL script editor/executor based on System.Data.SQLClient
 <a href="https://github.com/Laicure/SQLx"><img src="https://img.shields.io/github/repo-size/Laicure/SQLx.svg"></img></a>
 <a href="https://github.com/Laicure/SQLx/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Laicure/SQLx.svg"></img></a>
 
-###### Minimum Requirement: [.NET v4.5](https://www.microsoft.com/en/download/details.aspx?id=30653)
+###### Minimum Requirement: [.NET v3.5](https://www.microsoft.com/en/download/details.aspx?id=21)
