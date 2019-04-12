@@ -10,6 +10,9 @@ Public Class MainX
 	Dim TableList() As String = {}
 	Dim pendingRefresh As Boolean = False
 
+	Dim getColumns As Boolean = False
+	Dim ColumnList() As String = {}
+
 	Private Sub MainX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 		Me.Icon = My.Resources.database
 		Me.Text = "SQLx [Build Date: " & My.Computer.FileSystem.GetFileInfo(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName).LastWriteTimeUtc.ToString("yyyy-MM-dd HH:mm:ss") & " UTC]"
@@ -86,6 +89,7 @@ Public Class MainX
 			TxServerName.ReadOnly = True
 			TxUsername.ReadOnly = True
 			TxPassword.ReadOnly = True
+			CbAuthentication.Enabled = False
 
 			If CbAuthentication.SelectedIndex = 0 Then
 				SQLConn = "Data Source=" & TxServerName.Text.Trim & "; Integrated Security=SSPI"
@@ -109,10 +113,6 @@ Public Class MainX
 	End Sub
 
 	Private Sub bgTryConnect_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BgTryConnect.RunWorkerCompleted
-		LbConnect.Text = "Connect"
-		TxServerName.ReadOnly = False
-		TxUsername.ReadOnly = False
-		TxPassword.ReadOnly = False
 		If errx.Count = 2 Then
 			With LbStatus
 				.Text = ">> Disconnected <<"
@@ -161,11 +161,21 @@ Public Class MainX
 				End With
 			End If
 		End If
+
+		LbConnect.Text = "Connect"
+		TxServerName.ReadOnly = False
+		TxUsername.ReadOnly = False
+		TxPassword.ReadOnly = False
+		CbAuthentication.Enabled = True
 	End Sub
 
 	Private Sub BGgetDetails_DoWork(sender As Object, e As DoWorkEventArgs) Handles BGgetDetails.DoWork
+		If getColumns Then
+			ColumnList = SQLReadQuery("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS with (NoLock) where COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity')=0 and Table_Catalog='" & selectedDatabase & "' and Table_Name='" & selectedTable & "' order by ORDINAL_POSITION", 60, SQLConn, selectedDatabase).AsEnumerable().Select(Function(x) x.Field(Of String)("COLUMN_NAME")).Distinct.ToArray
+			Exit Sub
+		End If
 		If Not String.IsNullOrEmpty(e.Argument.ToString) Then
-			TableList = SQLReadQuery("select Table_Name from INFORMATION_SCHEMA.COLUMNS with (NoLock) where Table_Catalog='" & e.Argument.ToString & "'", 60, SQLConn, e.Argument.ToString).AsEnumerable().Select(Function(x) x.Field(Of String)("Table_Name")).Distinct.ToArray
+			TableList = SQLReadQuery("select Table_Name from INFORMATION_SCHEMA.COLUMNS with (NoLock) where Table_Catalog='" & selectedDatabase & "'", 60, SQLConn, selectedDatabase).AsEnumerable().Select(Function(x) x.Field(Of String)("Table_Name")).Distinct.ToArray
 		Else
 			DatabaseList = SQLReadQuery("SELECT name FROM master.sys.databases with (NoLock) where name not in ('master', 'tempdb', 'model', 'msdb')", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("name")).ToArray
 			TableList = {}
@@ -173,6 +183,14 @@ Public Class MainX
 	End Sub
 
 	Private Sub BGgetDetails_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BGgetDetails.RunWorkerCompleted
+		If getColumns Then
+			getColumns = False
+			If opDialog.ShowDialog = DialogResult.OK Then
+				BgImport.RunWorkerAsync(opDialog.FileName)
+			End If
+			Exit Sub
+		End If
+
 		If pendingRefresh Then
 			pendingRefresh = False
 			BGgetDetails.RunWorkerAsync("")
@@ -244,6 +262,7 @@ Public Class MainX
 			MessageBox.Show("Select a Database to proceed!", "Database?", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 			Exit Sub
 		End If
+		LbExecute.Text = "Executing..."
 		LbExecute.Enabled = False
 		TxQuery.ReadOnly = True
 		LbDataCount.Text = "Loading..."
@@ -266,8 +285,6 @@ Public Class MainX
 	End Sub
 
 	Private Sub BgExecute_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BgExecute.RunWorkerCompleted
-		LbExecute.Enabled = True
-		TxQuery.ReadOnly = False
 		If errx.Count = 2 Then
 			MessageBox.Show(errx(0), errx(1), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 		Else
@@ -275,6 +292,10 @@ Public Class MainX
 			ExecuteBSData.EndEdit()
 		End If
 		LbDataCount.Text = ExecuteData.Rows.Count.ToString("#,0")
+
+		LbExecute.Text = "Execute"
+		LbExecute.Enabled = True
+		TxQuery.ReadOnly = False
 	End Sub
 
 	Private Sub LbExport_Click(sender As Object, e As EventArgs) Handles LbExport.Click
@@ -294,6 +315,52 @@ Public Class MainX
 
 	Private Sub BgExport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BgExport.RunWorkerCompleted
 		LbExport.Text = "Export"
+	End Sub
+
+	Private Sub LbImport_Click(sender As Object, e As EventArgs) Handles LbImport.Click
+		If BGgetDetails.IsBusy Or BgImport.IsBusy Then Exit Sub
+		If LBoxTable.SelectedIndices.Count = 0 Then
+			MessageBox.Show("Please select a table for import!", "Select first!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+			Exit Sub
+		End If
+
+		LbImport.Text = "Importing..."
+		getColumns = True
+		BGgetDetails.RunWorkerAsync("")
+	End Sub
+
+	Private Sub BgImport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BgImport.DoWork
+		Dim excelData As New DataTable
+		excelData = ReadExcel(e.Argument.ToString, ColumnList).Copy
+		If excelData.Rows.Count > 0 Then
+			Try
+				Using conX As New SqlClient.SqlConnection(SQLConn), bulkX As New SqlClient.SqlBulkCopy(SQLConn, Data.SqlClient.SqlBulkCopyOptions.TableLock Or Data.SqlClient.SqlBulkCopyOptions.UseInternalTransaction Or Data.SqlClient.SqlBulkCopyOptions.FireTriggers)
+					'TODO
+					If conX.State = Data.ConnectionState.Closed Then conX.Open()
+					With bulkX
+						.DestinationTableName = selectedTable
+						.BulkCopyTimeout = 0
+						.BatchSize = 0
+						.WriteToServer(excelData)
+						.Close()
+					End With
+					If conX.State = ConnectionState.Open Then conX.Close()
+				End Using
+				errx = {}
+			Catch ex As Exception
+				errx = {Err.Description, Err.Source}
+			End Try
+		End If
+	End Sub
+
+	Private Sub BgImport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BgImport.RunWorkerCompleted
+		If errx.Count = 2 Then
+			MessageBox.Show(errx(0), errx(1), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+		Else
+			MessageBox.Show("Data uploaded!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information)
+		End If
+
+		LbImport.Text = "Import"
 	End Sub
 
 End Class

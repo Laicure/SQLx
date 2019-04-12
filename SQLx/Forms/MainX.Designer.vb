@@ -23,6 +23,7 @@ Partial Class MainX
 	<System.Diagnostics.DebuggerStepThrough()>
 	Private Sub InitializeComponent()
 		Me.panMenu = New System.Windows.Forms.Panel()
+		Me.LbImport = New System.Windows.Forms.Label()
 		Me.LbCollapse = New System.Windows.Forms.Label()
 		Me.LbStatus = New System.Windows.Forms.Label()
 		Me.LBoxTable = New System.Windows.Forms.ListBox()
@@ -55,6 +56,8 @@ Partial Class MainX
 		Me.BgExecute = New System.ComponentModel.BackgroundWorker()
 		Me.BgExport = New System.ComponentModel.BackgroundWorker()
 		Me.FdBrowse = New System.Windows.Forms.FolderBrowserDialog()
+		Me.opDialog = New System.Windows.Forms.OpenFileDialog()
+		Me.BgImport = New System.ComponentModel.BackgroundWorker()
 		Me.panMenu.SuspendLayout()
 		Me.SplitCon.Panel1.SuspendLayout()
 		Me.SplitCon.Panel2.SuspendLayout()
@@ -66,6 +69,7 @@ Partial Class MainX
 		'
 		'panMenu
 		'
+		Me.panMenu.Controls.Add(Me.LbImport)
 		Me.panMenu.Controls.Add(Me.LbCollapse)
 		Me.panMenu.Controls.Add(Me.LbStatus)
 		Me.panMenu.Controls.Add(Me.LBoxTable)
@@ -89,6 +93,22 @@ Partial Class MainX
 		Me.panMenu.Name = "panMenu"
 		Me.panMenu.Size = New System.Drawing.Size(150, 452)
 		Me.panMenu.TabIndex = 0
+		'
+		'LbImport
+		'
+		Me.LbImport.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+		Me.LbImport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LbImport.Cursor = System.Windows.Forms.Cursors.Hand
+		Me.LbImport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.LbImport.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+		Me.LbImport.ForeColor = System.Drawing.Color.Blue
+		Me.LbImport.Location = New System.Drawing.Point(75, 299)
+		Me.LbImport.Margin = New System.Windows.Forms.Padding(0)
+		Me.LbImport.Name = "LbImport"
+		Me.LbImport.Size = New System.Drawing.Size(75, 22)
+		Me.LbImport.TabIndex = 17
+		Me.LbImport.Text = "Import"
+		Me.LbImport.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'LbCollapse
 		'
@@ -140,7 +160,7 @@ Partial Class MainX
 		Me.Label7.Location = New System.Drawing.Point(0, 299)
 		Me.Label7.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label7.Name = "Label7"
-		Me.Label7.Size = New System.Drawing.Size(150, 22)
+		Me.Label7.Size = New System.Drawing.Size(76, 22)
 		Me.Label7.TabIndex = 14
 		Me.Label7.Text = "Table List"
 		Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -475,6 +495,13 @@ Partial Class MainX
 		'
 		Me.FdBrowse.Description = "Select a folder for Export"
 		'
+		'opDialog
+		'
+		Me.opDialog.Filter = "xlsx files|*.xlsx"
+		'
+		'BgImport
+		'
+		'
 		'MainX
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -538,4 +565,7 @@ Partial Class MainX
 	Friend WithEvents LbExport As Label
 	Friend WithEvents BgExport As System.ComponentModel.BackgroundWorker
 	Friend WithEvents FdBrowse As FolderBrowserDialog
+	Friend WithEvents LbImport As Label
+	Friend WithEvents opDialog As OpenFileDialog
+	Friend WithEvents BgImport As System.ComponentModel.BackgroundWorker
 End Class
