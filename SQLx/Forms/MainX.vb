@@ -309,11 +309,9 @@ Public Class MainX
 			Exit Sub
 		End If
 
-		LbImport.Text = "Importing..."
 		If opDialog.ShowDialog = DialogResult.OK Then
+			LbImport.Text = "Importing..."
 			BgImport.RunWorkerAsync(opDialog.FileName)
-		Else
-			LbImport.Text = "Import"
 		End If
 	End Sub
 
