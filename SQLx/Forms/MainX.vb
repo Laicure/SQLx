@@ -8,6 +8,7 @@ Public Class MainX
 	Dim ExecuteBSData As New BindingSource
 	Dim DatabaseList() As String = {}
 	Dim TableList() As String = {}
+	Dim ColumnList() As String = {}
 	Dim pendingRefresh As Boolean = False
 
 	Private Sub MainX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -316,7 +317,7 @@ Public Class MainX
 	End Sub
 
 	Private Sub BgImport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BgImport.DoWork
-		Dim ColumnList() As String = SQLReadQuery("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS with (NoLock) where COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity')=0 and Table_Catalog='" & selectedDatabase & "' and Table_Name='" & selectedTable & "' order by ORDINAL_POSITION", 60, SQLConn, selectedDatabase).AsEnumerable().Select(Function(x) x.Field(Of String)("COLUMN_NAME")).Distinct.ToArray
+		ColumnList = SQLReadQuery("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS with (NoLock) where COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity')=0 and Table_Catalog='" & selectedDatabase & "' and Table_Name='" & selectedTable & "' order by ORDINAL_POSITION", 60, SQLConn, selectedDatabase).AsEnumerable().Select(Function(x) x.Field(Of String)("COLUMN_NAME")).Distinct.ToArray
 
 		Dim excelData As New DataTable
 		excelData = ReadExcel(e.Argument.ToString, ColumnList).Copy
@@ -340,7 +341,7 @@ Public Class MainX
 
 	Private Sub BgImport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BgImport.RunWorkerCompleted
 		If errx.Count = 1 Then
-			MessageBox.Show("No data imported. The reasons might be:" & vbCrLf & "- Columns does not match" & vbCrLf & "- Excel file does not have any readable data", "No Data!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+			MessageBox.Show("No data imported." & vbCrLf & vbCrLf & "Column List:" & vbCrLf & "[" & String.Join("], [", ColumnList) & "]", "No Data!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 			LbImport.Text = "Import"
 			Exit Sub
 		End If
