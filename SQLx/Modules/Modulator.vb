@@ -23,6 +23,19 @@
 		End Using
 	End Function
 
+	Friend Sub SQLWriteQuery(ByVal queryX As String, ByVal timeXout As Integer, connection As String, Optional ByVal DatabaseName As String = "")
+		Using conX As New SqlClient.SqlConnection(connection), comX As New SqlClient.SqlCommand
+			If conX.State = ConnectionState.Closed Then conX.Open()
+			If Not String.IsNullOrEmpty(DatabaseName.Trim) Then conX.ChangeDatabase(DatabaseName.Trim)
+			With comX
+				.Connection = conX
+				.CommandTimeout = timeXout
+				.CommandText = "set nocount on; " & Trim(queryX)
+				.ExecuteNonQuery()
+			End With
+		End Using
+	End Sub
+
 #End Region
 
 #Region "DoubleBuffered Buff // Use Buff.DoubleBuff(<Control>)"
@@ -38,6 +51,8 @@
 	End Class
 
 #End Region
+
+#Region "Datagrid format"
 
 	Friend Sub ApplyDataGridViewProperties(ByVal datagrid As DataGridView)
 		Buff.DoubleBuff(datagrid)
@@ -69,5 +84,7 @@
 			.ResumeLayout()
 		End With
 	End Sub
+
+#End Region
 
 End Module

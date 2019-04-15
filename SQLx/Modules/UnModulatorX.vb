@@ -127,7 +127,7 @@ Module UnModulatorX
 						rowData.Add(IIf(String.IsNullOrEmpty(cellval.Trim), "", cellval.Trim).ToString)
 					End If
 				Next
-				excelData.Rows.Add(rowData)
+				excelData.Rows.Add(rowData.ToArray)
 			Next
 
 			With excel

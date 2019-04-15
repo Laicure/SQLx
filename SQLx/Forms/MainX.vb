@@ -187,6 +187,8 @@ Public Class MainX
 			getColumns = False
 			If opDialog.ShowDialog = DialogResult.OK Then
 				BgImport.RunWorkerAsync(opDialog.FileName)
+			Else
+				LbImport.Text = "Import"
 			End If
 			Exit Sub
 		End If
@@ -334,26 +336,29 @@ Public Class MainX
 		excelData = ReadExcel(e.Argument.ToString, ColumnList).Copy
 		If excelData.Rows.Count > 0 Then
 			Try
-				Using conX As New SqlClient.SqlConnection(SQLConn), bulkX As New SqlClient.SqlBulkCopy(SQLConn, Data.SqlClient.SqlBulkCopyOptions.TableLock Or Data.SqlClient.SqlBulkCopyOptions.UseInternalTransaction Or Data.SqlClient.SqlBulkCopyOptions.FireTriggers)
-					'TODO
-					If conX.State = Data.ConnectionState.Closed Then conX.Open()
-					With bulkX
-						.DestinationTableName = selectedTable
-						.BulkCopyTimeout = 0
-						.BatchSize = 0
-						.WriteToServer(excelData)
-						.Close()
-					End With
-					If conX.State = ConnectionState.Open Then conX.Close()
-				End Using
+				For Each dr As DataRow In excelData.Rows
+					Dim valuez As New List(Of String)
+					For Each dc As DataColumn In excelData.Columns
+						valuez.Add(dr.Item(dc).ToString.Replace("'", ""))
+					Next
+					SQLWriteQuery("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')", 500, SQLConn, selectedDatabase)
+				Next
 				errx = {}
 			Catch ex As Exception
 				errx = {Err.Description, Err.Source}
 			End Try
+		Else
+			errx = {"No Data!"}
 		End If
 	End Sub
 
 	Private Sub BgImport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BgImport.RunWorkerCompleted
+		If errx.Count = 1 Then
+			MessageBox.Show("No data imported. The reasons might be:" & vbCrLf & "- Columns does not match" & vbCrLf & "- Excel file does not have any readable data", "No Data!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+			LbImport.Text = "Import"
+			Exit Sub
+		End If
+
 		If errx.Count = 2 Then
 			MessageBox.Show(errx(0), errx(1), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 		Else
