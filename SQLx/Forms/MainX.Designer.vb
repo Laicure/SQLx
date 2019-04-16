@@ -69,8 +69,8 @@ Partial Class MainX
 		'
 		'panMenu
 		'
-		Me.panMenu.Controls.Add(Me.LbImport)
 		Me.panMenu.Controls.Add(Me.LbCollapse)
+		Me.panMenu.Controls.Add(Me.LbImport)
 		Me.panMenu.Controls.Add(Me.LbStatus)
 		Me.panMenu.Controls.Add(Me.LBoxTable)
 		Me.panMenu.Controls.Add(Me.Label7)
