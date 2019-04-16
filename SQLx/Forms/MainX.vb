@@ -328,7 +328,7 @@ Public Class MainX
 					For Each dc As DataColumn In excelData.Columns
 						valuez.Add(dr.Item(dc).ToString.Replace("'", ""))
 					Next
-					SQLWriteQuery("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')", 500, SQLConn, selectedDatabase)
+					SQLWriteQuery("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values (N'" & String.Join("', N'", valuez.ToArray) & "')", 500, SQLConn, selectedDatabase)
 				Next
 				errx = {}
 			Catch ex As Exception
