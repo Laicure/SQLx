@@ -80,22 +80,20 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbConnect_Click(sender As Object, e As EventArgs) Handles LbConnect.Click
-		If Not LbConnect.Enabled Then Exit Sub
+		If BgImport.IsBusy Or BgTryConnect.IsBusy Or BgExecute.IsBusy Or BGgetDetails.IsBusy Then Exit Sub
 
-		If Not BgTryConnect.IsBusy Then
-			LbConnect.Text = "Connecting..."
-			TxServerName.ReadOnly = True
-			TxUsername.ReadOnly = True
-			TxPassword.ReadOnly = True
-			CbAuthentication.Enabled = False
+		LbConnect.Text = "Connecting..."
+		TxServerName.ReadOnly = True
+		TxUsername.ReadOnly = True
+		TxPassword.ReadOnly = True
+		CbAuthentication.Enabled = False
 
-			If CbAuthentication.SelectedIndex = 0 Then
-				SQLConn = "Data Source=" & TxServerName.Text.Trim & "; Integrated Security=SSPI"
-			Else
-				SQLConn = "Data Source=" & TxServerName.Text.Trim & "; Integrated Security=false; User ID=" & TxUsername.Text.Trim & "; Password=" & TxPassword.Text & ";"
-			End If
-			BgTryConnect.RunWorkerAsync(SQLConn)
+		If CbAuthentication.SelectedIndex = 0 Then
+			SQLConn = "Data Source=" & TxServerName.Text.Trim & "; Integrated Security=SSPI"
+		Else
+			SQLConn = "Data Source=" & TxServerName.Text.Trim & "; Integrated Security=false; User ID=" & TxUsername.Text.Trim & "; Password=" & TxPassword.Text & ";"
 		End If
+		BgTryConnect.RunWorkerAsync(SQLConn)
 	End Sub
 
 	Private Sub bgTryConnect_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BgTryConnect.DoWork
@@ -243,7 +241,7 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbExecute_Click(sender As Object, e As EventArgs) Handles LbExecute.Click
-		If String.IsNullOrEmpty(TxQuery.Text.Trim) Or BgExecute.IsBusy Then Exit Sub
+		If String.IsNullOrEmpty(TxQuery.Text.Trim) Or BgExecute.IsBusy Or BgTryConnect.IsBusy Then Exit Sub
 		If LBoxDatabase.SelectedIndices.Count = 0 Then
 			MessageBox.Show("Select a Database to proceed!", "Database?", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 			Exit Sub
@@ -285,7 +283,7 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbExport_Click(sender As Object, e As EventArgs) Handles LbExport.Click
-		If ExecuteData.Rows.Count = 0 Or BgExport.IsBusy Then Exit Sub
+		If ExecuteData.Rows.Count = 0 Or BgExport.IsBusy Or BgExecute.IsBusy Then Exit Sub
 		If FdBrowse.ShowDialog = DialogResult.OK Then
 			Dim path As String = FdBrowse.SelectedPath & "\" & Now.ToString("yyyy.MM.dd_HH.mm.ss.fff")
 			LbExport.Text = "Exporting..."
@@ -304,7 +302,7 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbImport_Click(sender As Object, e As EventArgs) Handles LbImport.Click
-		If BGgetDetails.IsBusy Or BgImport.IsBusy Then Exit Sub
+		If BGgetDetails.IsBusy Or BgImport.IsBusy Or BgTryConnect.IsBusy Then Exit Sub
 		If LBoxTable.SelectedIndices.Count = 0 Then
 			MessageBox.Show("Please select a table for import!", "Select first!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 			Exit Sub
