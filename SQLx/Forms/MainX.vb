@@ -219,7 +219,7 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbCollapse_Click(sender As Object, e As EventArgs) Handles LbCollapse.Click
-		If panMenu.Width = 150 Then
+		If panMenu.Width = 200 Then
 			If LbStatus.ForeColor = Color.Red Then Exit Sub
 			panMenu.Width = 22
 			With LbCollapse
@@ -230,12 +230,12 @@ Public Class MainX
 			End With
 			TxQuery.Focus()
 		Else
-			panMenu.Width = 150
+			panMenu.Width = 200
 			With LbCollapse
 				.Text = "<"
 				.Height = 22
 				.Top = 126
-				.Left = 128
+				.Left = 178
 			End With
 		End If
 	End Sub

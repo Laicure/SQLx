@@ -23,8 +23,8 @@ Partial Class MainX
 	<System.Diagnostics.DebuggerStepThrough()>
 	Private Sub InitializeComponent()
 		Me.panMenu = New System.Windows.Forms.Panel()
-		Me.LbImport = New System.Windows.Forms.Label()
 		Me.LbCollapse = New System.Windows.Forms.Label()
+		Me.LbImport = New System.Windows.Forms.Label()
 		Me.LbStatus = New System.Windows.Forms.Label()
 		Me.LBoxTable = New System.Windows.Forms.ListBox()
 		Me.Label7 = New System.Windows.Forms.Label()
@@ -91,24 +91,8 @@ Partial Class MainX
 		Me.panMenu.Location = New System.Drawing.Point(1, 1)
 		Me.panMenu.Margin = New System.Windows.Forms.Padding(0)
 		Me.panMenu.Name = "panMenu"
-		Me.panMenu.Size = New System.Drawing.Size(150, 452)
+		Me.panMenu.Size = New System.Drawing.Size(200, 452)
 		Me.panMenu.TabIndex = 0
-		'
-		'LbImport
-		'
-		Me.LbImport.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-		Me.LbImport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.LbImport.Cursor = System.Windows.Forms.Cursors.Hand
-		Me.LbImport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.LbImport.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-		Me.LbImport.ForeColor = System.Drawing.Color.Blue
-		Me.LbImport.Location = New System.Drawing.Point(75, 299)
-		Me.LbImport.Margin = New System.Windows.Forms.Padding(0)
-		Me.LbImport.Name = "LbImport"
-		Me.LbImport.Size = New System.Drawing.Size(75, 22)
-		Me.LbImport.TabIndex = 17
-		Me.LbImport.Text = "Import"
-		Me.LbImport.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'LbCollapse
 		'
@@ -118,13 +102,29 @@ Partial Class MainX
 		Me.LbCollapse.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbCollapse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.LbCollapse.ForeColor = System.Drawing.Color.Blue
-		Me.LbCollapse.Location = New System.Drawing.Point(128, 126)
+		Me.LbCollapse.Location = New System.Drawing.Point(178, 126)
 		Me.LbCollapse.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbCollapse.Name = "LbCollapse"
 		Me.LbCollapse.Size = New System.Drawing.Size(22, 22)
 		Me.LbCollapse.TabIndex = 16
 		Me.LbCollapse.Text = "<"
 		Me.LbCollapse.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		'
+		'LbImport
+		'
+		Me.LbImport.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+		Me.LbImport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LbImport.Cursor = System.Windows.Forms.Cursors.Hand
+		Me.LbImport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.LbImport.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+		Me.LbImport.ForeColor = System.Drawing.Color.Blue
+		Me.LbImport.Location = New System.Drawing.Point(125, 299)
+		Me.LbImport.Margin = New System.Windows.Forms.Padding(0)
+		Me.LbImport.Name = "LbImport"
+		Me.LbImport.Size = New System.Drawing.Size(75, 22)
+		Me.LbImport.TabIndex = 17
+		Me.LbImport.Text = "Import"
+		Me.LbImport.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'LbStatus
 		'
@@ -135,7 +135,7 @@ Partial Class MainX
 		Me.LbStatus.Location = New System.Drawing.Point(0, 126)
 		Me.LbStatus.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbStatus.Name = "LbStatus"
-		Me.LbStatus.Size = New System.Drawing.Size(129, 22)
+		Me.LbStatus.Size = New System.Drawing.Size(179, 22)
 		Me.LbStatus.TabIndex = 15
 		Me.LbStatus.Text = ">> Stand-by <<"
 		Me.LbStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -149,7 +149,7 @@ Partial Class MainX
 		Me.LBoxTable.Location = New System.Drawing.Point(0, 320)
 		Me.LBoxTable.Margin = New System.Windows.Forms.Padding(0)
 		Me.LBoxTable.Name = "LBoxTable"
-		Me.LBoxTable.Size = New System.Drawing.Size(150, 132)
+		Me.LBoxTable.Size = New System.Drawing.Size(200, 132)
 		Me.LBoxTable.TabIndex = 13
 		Me.LBoxTable.TabStop = False
 		'
@@ -160,7 +160,7 @@ Partial Class MainX
 		Me.Label7.Location = New System.Drawing.Point(0, 299)
 		Me.Label7.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label7.Name = "Label7"
-		Me.Label7.Size = New System.Drawing.Size(76, 22)
+		Me.Label7.Size = New System.Drawing.Size(126, 22)
 		Me.Label7.TabIndex = 14
 		Me.Label7.Text = "Table List"
 		Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -174,7 +174,7 @@ Partial Class MainX
 		Me.LBoxDatabase.Location = New System.Drawing.Point(0, 168)
 		Me.LBoxDatabase.Margin = New System.Windows.Forms.Padding(0)
 		Me.LBoxDatabase.Name = "LBoxDatabase"
-		Me.LBoxDatabase.Size = New System.Drawing.Size(150, 132)
+		Me.LBoxDatabase.Size = New System.Drawing.Size(200, 132)
 		Me.LBoxDatabase.TabIndex = 1
 		Me.LBoxDatabase.TabStop = False
 		'
@@ -185,7 +185,7 @@ Partial Class MainX
 		Me.Label8.Location = New System.Drawing.Point(0, 147)
 		Me.Label8.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label8.Name = "Label8"
-		Me.Label8.Size = New System.Drawing.Size(150, 22)
+		Me.Label8.Size = New System.Drawing.Size(200, 22)
 		Me.Label8.TabIndex = 12
 		Me.Label8.Text = "Database List"
 		Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -201,7 +201,7 @@ Partial Class MainX
 		Me.LbConnect.Location = New System.Drawing.Point(0, 105)
 		Me.LbConnect.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbConnect.Name = "LbConnect"
-		Me.LbConnect.Size = New System.Drawing.Size(150, 22)
+		Me.LbConnect.Size = New System.Drawing.Size(200, 22)
 		Me.LbConnect.TabIndex = 10
 		Me.LbConnect.Text = "Connect"
 		Me.LbConnect.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -214,7 +214,7 @@ Partial Class MainX
 		Me.TxPassword.Location = New System.Drawing.Point(49, 84)
 		Me.TxPassword.Margin = New System.Windows.Forms.Padding(0)
 		Me.TxPassword.Name = "TxPassword"
-		Me.TxPassword.Size = New System.Drawing.Size(101, 22)
+		Me.TxPassword.Size = New System.Drawing.Size(151, 22)
 		Me.TxPassword.TabIndex = 3
 		Me.TxPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		Me.TxPassword.UseSystemPasswordChar = True
@@ -228,7 +228,7 @@ Partial Class MainX
 		Me.TxUsername.Location = New System.Drawing.Point(49, 63)
 		Me.TxUsername.Margin = New System.Windows.Forms.Padding(0)
 		Me.TxUsername.Name = "TxUsername"
-		Me.TxUsername.Size = New System.Drawing.Size(101, 22)
+		Me.TxUsername.Size = New System.Drawing.Size(151, 22)
 		Me.TxUsername.TabIndex = 2
 		Me.TxUsername.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		Me.TxUsername.WordWrap = False
@@ -268,7 +268,7 @@ Partial Class MainX
 		Me.CbAuthentication.Location = New System.Drawing.Point(50, 43)
 		Me.CbAuthentication.Margin = New System.Windows.Forms.Padding(0)
 		Me.CbAuthentication.Name = "CbAuthentication"
-		Me.CbAuthentication.Size = New System.Drawing.Size(100, 21)
+		Me.CbAuthentication.Size = New System.Drawing.Size(150, 21)
 		Me.CbAuthentication.TabIndex = 1
 		'
 		'TxServerName
@@ -279,7 +279,7 @@ Partial Class MainX
 		Me.TxServerName.Location = New System.Drawing.Point(49, 21)
 		Me.TxServerName.Margin = New System.Windows.Forms.Padding(0)
 		Me.TxServerName.Name = "TxServerName"
-		Me.TxServerName.Size = New System.Drawing.Size(101, 22)
+		Me.TxServerName.Size = New System.Drawing.Size(151, 22)
 		Me.TxServerName.TabIndex = 0
 		Me.TxServerName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		Me.TxServerName.WordWrap = False
@@ -304,7 +304,7 @@ Partial Class MainX
 		Me.Label2.Location = New System.Drawing.Point(49, 0)
 		Me.Label2.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label2.Name = "Label2"
-		Me.Label2.Size = New System.Drawing.Size(101, 22)
+		Me.Label2.Size = New System.Drawing.Size(151, 22)
 		Me.Label2.TabIndex = 5
 		Me.Label2.Text = "Database Engine"
 		Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -342,7 +342,7 @@ Partial Class MainX
 		'SplitCon
 		'
 		Me.SplitCon.Dock = System.Windows.Forms.DockStyle.Fill
-		Me.SplitCon.Location = New System.Drawing.Point(151, 1)
+		Me.SplitCon.Location = New System.Drawing.Point(201, 1)
 		Me.SplitCon.Margin = New System.Windows.Forms.Padding(0)
 		Me.SplitCon.Name = "SplitCon"
 		Me.SplitCon.Orientation = System.Windows.Forms.Orientation.Horizontal
@@ -358,7 +358,7 @@ Partial Class MainX
 		Me.SplitCon.Panel2.Controls.Add(Me.DgData)
 		Me.SplitCon.Panel2.Controls.Add(Me.Panel2)
 		Me.SplitCon.Panel2MinSize = 50
-		Me.SplitCon.Size = New System.Drawing.Size(632, 452)
+		Me.SplitCon.Size = New System.Drawing.Size(582, 452)
 		Me.SplitCon.SplitterDistance = 169
 		Me.SplitCon.SplitterWidth = 5
 		Me.SplitCon.TabIndex = 15
@@ -374,7 +374,7 @@ Partial Class MainX
 		Me.TxQuery.Margin = New System.Windows.Forms.Padding(0)
 		Me.TxQuery.Multiline = True
 		Me.TxQuery.Name = "TxQuery"
-		Me.TxQuery.Size = New System.Drawing.Size(632, 148)
+		Me.TxQuery.Size = New System.Drawing.Size(582, 148)
 		Me.TxQuery.TabIndex = 7
 		Me.TxQuery.WordWrap = False
 		'
@@ -386,7 +386,7 @@ Partial Class MainX
 		Me.Panel1.Location = New System.Drawing.Point(0, 0)
 		Me.Panel1.Margin = New System.Windows.Forms.Padding(0)
 		Me.Panel1.Name = "Panel1"
-		Me.Panel1.Size = New System.Drawing.Size(632, 21)
+		Me.Panel1.Size = New System.Drawing.Size(582, 21)
 		Me.Panel1.TabIndex = 10
 		'
 		'Label9
@@ -398,7 +398,7 @@ Partial Class MainX
 		Me.Label9.Location = New System.Drawing.Point(0, 0)
 		Me.Label9.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label9.Name = "Label9"
-		Me.Label9.Size = New System.Drawing.Size(558, 21)
+		Me.Label9.Size = New System.Drawing.Size(508, 21)
 		Me.Label9.TabIndex = 6
 		Me.Label9.Text = "Query ⤵"
 		Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -411,7 +411,7 @@ Partial Class MainX
 		Me.LbExecute.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbExecute.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.LbExecute.ForeColor = System.Drawing.Color.Blue
-		Me.LbExecute.Location = New System.Drawing.Point(557, 0)
+		Me.LbExecute.Location = New System.Drawing.Point(507, 0)
 		Me.LbExecute.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbExecute.Name = "LbExecute"
 		Me.LbExecute.Size = New System.Drawing.Size(75, 21)
@@ -427,7 +427,7 @@ Partial Class MainX
 		Me.DgData.Location = New System.Drawing.Point(0, 22)
 		Me.DgData.Margin = New System.Windows.Forms.Padding(0)
 		Me.DgData.Name = "DgData"
-		Me.DgData.Size = New System.Drawing.Size(632, 256)
+		Me.DgData.Size = New System.Drawing.Size(582, 256)
 		Me.DgData.TabIndex = 10
 		'
 		'Panel2
@@ -439,7 +439,7 @@ Partial Class MainX
 		Me.Panel2.Location = New System.Drawing.Point(0, 0)
 		Me.Panel2.Margin = New System.Windows.Forms.Padding(0)
 		Me.Panel2.Name = "Panel2"
-		Me.Panel2.Size = New System.Drawing.Size(632, 22)
+		Me.Panel2.Size = New System.Drawing.Size(582, 22)
 		Me.Panel2.TabIndex = 12
 		'
 		'LbDataCount
@@ -463,7 +463,7 @@ Partial Class MainX
 		Me.LbExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbExport.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.LbExport.ForeColor = System.Drawing.Color.Blue
-		Me.LbExport.Location = New System.Drawing.Point(557, 0)
+		Me.LbExport.Location = New System.Drawing.Point(507, 0)
 		Me.LbExport.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbExport.Name = "LbExport"
 		Me.LbExport.Size = New System.Drawing.Size(75, 22)
@@ -480,7 +480,7 @@ Partial Class MainX
 		Me.Label10.Location = New System.Drawing.Point(99, 0)
 		Me.Label10.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label10.Name = "Label10"
-		Me.Label10.Size = New System.Drawing.Size(459, 22)
+		Me.Label10.Size = New System.Drawing.Size(409, 22)
 		Me.Label10.TabIndex = 8
 		Me.Label10.Text = "Data ⤵"
 		Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
