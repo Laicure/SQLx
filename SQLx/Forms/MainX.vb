@@ -2,14 +2,14 @@
 
 Public Class MainX
 	Dim errx() As String = {}
-	Friend selectedDatabase As String = ""
 	Friend selectedTable As String = ""
 	Dim ExecuteData As New DataTable
 	Dim ExecuteBSData As New BindingSource
-	Dim DatabaseList() As String = {}
 	Dim TableList() As String = {}
 	Dim ColumnList() As String = {}
 	Dim pendingRefresh As Boolean = False
+	Dim Connected As Boolean = False
+	Dim SQLiteFile As String = ""
 
 	Private Sub MainX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 		Me.Icon = My.Resources.database
@@ -24,8 +24,6 @@ Public Class MainX
 		'set strings
 		Username = Environment.UserName
 		Domain = Environment.UserDomainName
-
-		CbAuthentication.SelectedIndex = 0
 	End Sub
 
 	Private Sub MainX_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
@@ -35,70 +33,23 @@ Public Class MainX
 		End If
 	End Sub
 
-	Private Sub CbAuthentication_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CbAuthentication.SelectedIndexChanged
-		If CbAuthentication.SelectedIndex = 0 Then
-			With TxUsername
-				.Text = Domain & "\" & Username
-				.Enabled = False
-			End With
-			With TxPassword
-				.Clear()
-				.Enabled = False
-			End With
-			TxServerName.Focus()
-		Else
-			With TxUsername
-				.Clear()
-				.Enabled = True
-				.Focus()
-			End With
-			With TxPassword
-				.Clear()
-				.Enabled = True
-			End With
-		End If
-	End Sub
-
-	Private Sub TxUsername_TextChanged(sender As Object, e As EventArgs) Handles TxUsername.TextChanged, TxPassword.TextChanged, TxServerName.TextChanged
-		With LbConnect
-			If TxServerName.Text.Trim.Length < 4 Then
-				.Enabled = False
-				Exit Sub
-			End If
-			If TxUsername.Text.Trim.Length > 1 And TxPassword.Text.Trim.Length > 2 And CbAuthentication.SelectedIndex = 1 Then
-				.Enabled = True
-			ElseIf CbAuthentication.SelectedIndex = 0 Then
-				.Enabled = True
-			Else
-				.Enabled = False
-			End If
-		End With
-	End Sub
-
-	Private Sub TxPassword_KeyDown(sender As Object, e As KeyEventArgs) Handles TxUsername.KeyDown, TxServerName.KeyDown, TxPassword.KeyDown, CbAuthentication.KeyDown
+	Private Sub TxPassword_KeyDown(sender As Object, e As KeyEventArgs) Handles TxServerName.KeyDown
 		If e.KeyCode = Keys.Enter Then LbConnect_Click(sender, Nothing)
 	End Sub
 
 	Private Sub LbConnect_Click(sender As Object, e As EventArgs) Handles LbConnect.Click
-		If BgImport.IsBusy Or BgTryConnect.IsBusy Or BgExecute.IsBusy Or BGgetDetails.IsBusy Then Exit Sub
+		If BgImport.IsBusy Or BgTryConnect.IsBusy Or BgExecute.IsBusy Or BGgetDetails.IsBusy Or String.IsNullOrEmpty(TxServerName.Text.Trim) Then Exit Sub
 
 		LbConnect.Text = "Connecting..."
-		TxServerName.ReadOnly = True
-		TxUsername.ReadOnly = True
-		TxPassword.ReadOnly = True
-		CbAuthentication.Enabled = False
 
-		If CbAuthentication.SelectedIndex = 0 Then
-			SQLConn = "Data Source=" & TxServerName.Text.Trim & "; Integrated Security=SSPI"
-		Else
-			SQLConn = "Data Source=" & TxServerName.Text.Trim & "; Integrated Security=false; User ID=" & TxUsername.Text.Trim & "; Password=" & TxPassword.Text & ";"
-		End If
+		SQLConn = "Data Source=" & TxServerName.Text & ";Version=3;Compress=True;"
 		BgTryConnect.RunWorkerAsync(SQLConn)
 	End Sub
 
 	Private Sub bgTryConnect_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BgTryConnect.DoWork
+		Threading.Thread.Sleep(222)
 		Try
-			Using tryCon As New SqlClient.SqlConnection(e.Argument.ToString)
+			Using tryCon As New SQLite.SQLiteConnection(e.Argument.ToString)
 				tryCon.Open()
 				tryCon.Close()
 			End Using
@@ -112,12 +63,8 @@ Public Class MainX
 		If errx.Count = 2 Then
 			With LbStatus
 				.Text = ">> Disconnected <<"
+				Connected = False
 				.ForeColor = Color.Red
-			End With
-			With LBoxDatabase
-				.BeginUpdate()
-				.Items.Clear()
-				.EndUpdate()
 			End With
 			With LBoxTable
 				.BeginUpdate()
@@ -128,28 +75,19 @@ Public Class MainX
 		Else
 			With LbStatus
 				.Text = "<< Connected >>"
+				Connected = True
 				.ForeColor = Color.Green
 			End With
 
 			If Not BGgetDetails.IsBusy Then
-				With LBoxDatabase
-					.BeginUpdate()
-					.Items.Clear()
-					.EndUpdate()
-				End With
 				With LBoxTable
 					.BeginUpdate()
 					.Items.Clear()
 					.EndUpdate()
 				End With
-				BGgetDetails.RunWorkerAsync("")
+				BGgetDetails.RunWorkerAsync()
 			Else
 				pendingRefresh = True
-				With LBoxDatabase
-					.BeginUpdate()
-					.Items.Clear()
-					.EndUpdate()
-				End With
 				With LBoxTable
 					.BeginUpdate()
 					.Items.Clear()
@@ -159,36 +97,20 @@ Public Class MainX
 		End If
 
 		LbConnect.Text = "Connect"
-		TxServerName.ReadOnly = False
-		TxUsername.ReadOnly = False
-		TxPassword.ReadOnly = False
-		CbAuthentication.Enabled = True
+		LbCreateConnect.Text = "Create New Database then Connect"
 	End Sub
 
 	Private Sub BGgetDetails_DoWork(sender As Object, e As DoWorkEventArgs) Handles BGgetDetails.DoWork
-		If Not String.IsNullOrEmpty(e.Argument.ToString) Then
-			TableList = SQLReadQuery("select Table_Name from INFORMATION_SCHEMA.COLUMNS with (NoLock) where Table_Catalog='" & selectedDatabase & "'", 60, SQLConn, selectedDatabase).AsEnumerable().Select(Function(x) x.Field(Of String)("Table_Name")).Distinct.ToArray
-		Else
-			DatabaseList = SQLReadQuery("SELECT name FROM master.sys.databases with (NoLock) where name not in ('master', 'tempdb', 'model', 'msdb')", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("name")).ToArray
-			TableList = {}
-		End If
+		Threading.Thread.Sleep(222)
+		TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master where type='table';", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("tbl_name")).Distinct.ToArray
 	End Sub
 
 	Private Sub BGgetDetails_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BGgetDetails.RunWorkerCompleted
 		If pendingRefresh Then
 			pendingRefresh = False
-			BGgetDetails.RunWorkerAsync("")
+			LbTableRefresh.Text = "Refreshing..."
+			BGgetDetails.RunWorkerAsync()
 			Exit Sub
-		End If
-
-		If DatabaseList.Count > 0 And LBoxDatabase.SelectedIndices.Count = 0 Then
-			With LBoxDatabase
-				.BeginUpdate()
-				.Items.Clear()
-				.Items.AddRange(DatabaseList)
-				.EndUpdate()
-				.SelectedIndex = 0
-			End With
 		End If
 
 		If TableList.Count > 0 Then
@@ -199,15 +121,8 @@ Public Class MainX
 				.EndUpdate()
 			End With
 		End If
-	End Sub
 
-	Private Sub LBoxDatabase_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LBoxDatabase.SelectedIndexChanged
-		If LBoxDatabase.SelectedIndex >= 0 Then
-			selectedDatabase = LBoxDatabase.GetItemText(LBoxDatabase.SelectedItem)
-			BGgetDetails.RunWorkerAsync(selectedDatabase)
-		Else
-			selectedDatabase = ""
-		End If
+		LbTableRefresh.Text = "Refresh"
 	End Sub
 
 	Private Sub LBoxTable_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LBoxTable.SelectedIndexChanged
@@ -219,6 +134,8 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbCollapse_Click(sender As Object, e As EventArgs) Handles LbCollapse.Click
+		If Not Connected Then Exit Sub
+
 		If panMenu.Width = 200 Then
 			If LbStatus.ForeColor = Color.Red Then Exit Sub
 			panMenu.Width = 22
@@ -234,30 +151,32 @@ Public Class MainX
 			With LbCollapse
 				.Text = "<"
 				.Height = 22
-				.Top = 126
+				.Top = 135
 				.Left = 178
 			End With
 		End If
 	End Sub
 
 	Private Sub LbExecute_Click(sender As Object, e As EventArgs) Handles LbExecute.Click
-		If String.IsNullOrEmpty(TxQuery.Text.Trim) Or BgExecute.IsBusy Or BgTryConnect.IsBusy Then Exit Sub
-		If LBoxDatabase.SelectedIndices.Count = 0 Then
-			MessageBox.Show("Select a Database to proceed!", "Database?", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+		If String.IsNullOrEmpty(TxQuery.Text.Trim) Or BgExecute.IsBusy Or BgTryConnect.IsBusy Or Not Connected Then Exit Sub
+
+		If Not My.Computer.FileSystem.FileExists(SQLiteFile) Then
+			MessageBox.Show("Database file seems to be missing." & vbCrLf & vbCrLf & "File: " & SQLiteFile, "Database file not found!", MessageBoxButtons.OK, MessageBoxIcon.Error)
 			Exit Sub
 		End If
+
 		LbExecute.Text = "Executing..."
 		LbExecute.Enabled = False
 		TxQuery.ReadOnly = True
 		LbDataCount.Text = "Loading..."
-		BgExecute.RunWorkerAsync({TxQuery.Text.Trim, selectedDatabase})
+		BgExecute.RunWorkerAsync({TxQuery.Text.Trim})
 	End Sub
 
 	Private Sub BgExecute_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BgExecute.DoWork
 		Dim args() As String = CType(e.Argument, String())
 		Dim getdata As New DataTable
 		Try
-			getdata = SQLReadQuery(args(0), 300, SQLConn, args(1)).Copy
+			getdata = SQLReadQuery(args(0), 300, SQLConn).Copy
 			errx = {}
 		Catch ex As Exception
 			errx = {Err.Description, Err.Source}
@@ -284,11 +203,14 @@ Public Class MainX
 
 	Private Sub LbExport_Click(sender As Object, e As EventArgs) Handles LbExport.Click
 		If ExecuteData.Rows.Count = 0 Or BgExport.IsBusy Or BgExecute.IsBusy Then Exit Sub
-		If FdBrowse.ShowDialog = DialogResult.OK Then
-			Dim path As String = FdBrowse.SelectedPath & "\" & Now.ToString("yyyy.MM.dd_HH.mm.ss.fff")
-			LbExport.Text = "Exporting..."
-			BgExport.RunWorkerAsync(path)
-		End If
+		With FdBrowse
+			.Description = "Select a folder for Export"
+			If .ShowDialog = DialogResult.OK Then
+				Dim path As String = .SelectedPath & "\" & Now.ToString("yyyy.MM.dd_HH.mm.ss.fff")
+				LbExport.Text = "Exporting..."
+				BgExport.RunWorkerAsync(path)
+			End If
+		End With
 	End Sub
 
 	Private Sub BgExport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BgExport.DoWork
@@ -302,20 +224,30 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbImport_Click(sender As Object, e As EventArgs) Handles LbImport.Click
-		If BGgetDetails.IsBusy Or BgImport.IsBusy Or BgTryConnect.IsBusy Then Exit Sub
+		If BGgetDetails.IsBusy Or BgImport.IsBusy Or BgTryConnect.IsBusy Or Not Connected Then Exit Sub
+
+		If Not My.Computer.FileSystem.FileExists(SQLiteFile) Then
+			MessageBox.Show("Database file seems to be missing." & vbCrLf & vbCrLf & "File: " & SQLiteFile, "Database file not found!", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			Exit Sub
+		End If
+
 		If LBoxTable.SelectedIndices.Count = 0 Then
 			MessageBox.Show("Please select a table for import!", "Select first!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 			Exit Sub
 		End If
 
-		If opDialog.ShowDialog = DialogResult.OK Then
-			LbImport.Text = "Importing..."
-			BgImport.RunWorkerAsync(opDialog.FileName)
-		End If
+		With opDialog
+			.Title = "Select Excel file for import"
+			.Filter = "Excel files|*.xlsx; *.xlsb; *.xlsm; *.xls"
+			If .ShowDialog = DialogResult.OK Then
+				LbImport.Text = "Importing..."
+				BgImport.RunWorkerAsync(.FileName)
+			End If
+		End With
 	End Sub
 
 	Private Sub BgImport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BgImport.DoWork
-		ColumnList = SQLReadQuery("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS with (NoLock) where COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity')=0 and Table_Catalog='" & selectedDatabase & "' and Table_Name='" & selectedTable & "' order by ORDINAL_POSITION", 60, SQLConn, selectedDatabase).AsEnumerable().Select(Function(x) x.Field(Of String)("COLUMN_NAME")).Distinct.ToArray
+		ColumnList = SQLReadQuery("PRAGMA table_info(" & selectedTable & ")", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("name")).Distinct.ToArray
 
 		Dim excelData As New DataTable
 		excelData = ReadExcel(e.Argument.ToString, ColumnList).Copy
@@ -326,7 +258,7 @@ Public Class MainX
 					For Each dc As DataColumn In excelData.Columns
 						valuez.Add(dr.Item(dc).ToString.Replace("'", ""))
 					Next
-					SQLWriteQuery("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values (N'" & String.Join("', N'", valuez.ToArray) & "')", 500, SQLConn, selectedDatabase)
+					SQLWriteQuery("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')", 500, SQLConn)
 				Next
 				errx = {}
 			Catch ex As Exception
@@ -351,6 +283,70 @@ Public Class MainX
 		End If
 
 		LbImport.Text = "Import"
+	End Sub
+
+	Private Sub LbSQLiteBrowse_Click(sender As Object, e As EventArgs) Handles LbSQLiteBrowse.Click
+		With opDialog
+			.Title = "Select SQLite file"
+			.Filter = "SQLite files|*.*"
+			If .ShowDialog = DialogResult.OK Then
+				SQLiteFile = .FileName
+				TxServerName.Text = SQLiteFile
+				LbConnect_Click(sender, Nothing)
+			End If
+		End With
+	End Sub
+
+	Private Sub LbCreateConnect_Click(sender As Object, e As EventArgs) Handles LbCreateConnect.Click
+		If BgImport.IsBusy Or BgTryConnect.IsBusy Or BgExecute.IsBusy Or BGgetDetails.IsBusy Then Exit Sub
+
+		With FdBrowse
+			.Description = "Select a folder for creating the database"
+			If .ShowDialog = DialogResult.OK Then
+				SQLiteFile = .SelectedPath & "\" & Now.ToString("yyyy.MM.dd_HH.mm.ss.fff") & ".SQLite"
+				LbCreateConnect.Text = "Creating..."
+				Try
+					SQLite.SQLiteConnection.CreateFile(SQLiteFile)
+				Catch ex As Exception
+					LbCreateConnect.Text = "Create New Database then Connect"
+					MessageBox.Show(Err.Description, Err.Source, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+					Exit Sub
+				End Try
+
+				TxServerName.Text = SQLiteFile
+
+				LbCreateConnect.Text = "Connecting..."
+
+				SQLConn = "Data Source=" & SQLiteFile & ";Version=3;New=True;Compress=True;"
+				BgTryConnect.RunWorkerAsync(SQLConn)
+			End If
+		End With
+	End Sub
+
+	Private Sub LbTableRefresh_Click(sender As Object, e As EventArgs) Handles LbTableRefresh.Click
+		If Not Connected Then Exit Sub
+
+		If Not My.Computer.FileSystem.FileExists(SQLiteFile) Then
+			MessageBox.Show("Database file seems to be missing." & vbCrLf & vbCrLf & "File: " & SQLiteFile, "Database file not found!", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			Exit Sub
+		End If
+
+		If Not BGgetDetails.IsBusy Then
+			LbTableRefresh.Text = "Refreshing..."
+			With LBoxTable
+				.BeginUpdate()
+				.Items.Clear()
+				.EndUpdate()
+			End With
+			BGgetDetails.RunWorkerAsync()
+		Else
+			pendingRefresh = True
+			With LBoxTable
+				.BeginUpdate()
+				.Items.Clear()
+				.EndUpdate()
+			End With
+		End If
 	End Sub
 
 End Class

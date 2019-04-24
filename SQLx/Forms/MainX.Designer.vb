@@ -23,24 +23,17 @@ Partial Class MainX
 	<System.Diagnostics.DebuggerStepThrough()>
 	Private Sub InitializeComponent()
 		Me.panMenu = New System.Windows.Forms.Panel()
+		Me.LbTableRefresh = New System.Windows.Forms.Label()
+		Me.LbSQLiteBrowse = New System.Windows.Forms.Label()
 		Me.LbCollapse = New System.Windows.Forms.Label()
 		Me.LbImport = New System.Windows.Forms.Label()
 		Me.LbStatus = New System.Windows.Forms.Label()
 		Me.LBoxTable = New System.Windows.Forms.ListBox()
 		Me.Label7 = New System.Windows.Forms.Label()
-		Me.LBoxDatabase = New System.Windows.Forms.ListBox()
-		Me.Label8 = New System.Windows.Forms.Label()
 		Me.LbConnect = New System.Windows.Forms.Label()
-		Me.TxPassword = New System.Windows.Forms.TextBox()
-		Me.TxUsername = New System.Windows.Forms.TextBox()
-		Me.Label5 = New System.Windows.Forms.Label()
-		Me.Label6 = New System.Windows.Forms.Label()
-		Me.CbAuthentication = New System.Windows.Forms.ComboBox()
 		Me.TxServerName = New System.Windows.Forms.TextBox()
 		Me.Label3 = New System.Windows.Forms.Label()
-		Me.Label2 = New System.Windows.Forms.Label()
-		Me.Label1 = New System.Windows.Forms.Label()
-		Me.Label4 = New System.Windows.Forms.Label()
+		Me.LbCreateConnect = New System.Windows.Forms.Label()
 		Me.BgTryConnect = New System.ComponentModel.BackgroundWorker()
 		Me.BGgetDetails = New System.ComponentModel.BackgroundWorker()
 		Me.SplitCon = New System.Windows.Forms.SplitContainer()
@@ -71,28 +64,52 @@ Partial Class MainX
 		'
 		Me.panMenu.Controls.Add(Me.LbCollapse)
 		Me.panMenu.Controls.Add(Me.LbImport)
+		Me.panMenu.Controls.Add(Me.LbSQLiteBrowse)
+		Me.panMenu.Controls.Add(Me.LbTableRefresh)
 		Me.panMenu.Controls.Add(Me.LbStatus)
 		Me.panMenu.Controls.Add(Me.LBoxTable)
 		Me.panMenu.Controls.Add(Me.Label7)
-		Me.panMenu.Controls.Add(Me.LBoxDatabase)
-		Me.panMenu.Controls.Add(Me.Label8)
 		Me.panMenu.Controls.Add(Me.LbConnect)
-		Me.panMenu.Controls.Add(Me.TxPassword)
-		Me.panMenu.Controls.Add(Me.TxUsername)
-		Me.panMenu.Controls.Add(Me.Label5)
-		Me.panMenu.Controls.Add(Me.Label6)
-		Me.panMenu.Controls.Add(Me.CbAuthentication)
 		Me.panMenu.Controls.Add(Me.TxServerName)
 		Me.panMenu.Controls.Add(Me.Label3)
-		Me.panMenu.Controls.Add(Me.Label2)
-		Me.panMenu.Controls.Add(Me.Label1)
-		Me.panMenu.Controls.Add(Me.Label4)
+		Me.panMenu.Controls.Add(Me.LbCreateConnect)
 		Me.panMenu.Dock = System.Windows.Forms.DockStyle.Left
 		Me.panMenu.Location = New System.Drawing.Point(1, 1)
 		Me.panMenu.Margin = New System.Windows.Forms.Padding(0)
 		Me.panMenu.Name = "panMenu"
 		Me.panMenu.Size = New System.Drawing.Size(200, 452)
 		Me.panMenu.TabIndex = 0
+		'
+		'LbTableRefresh
+		'
+		Me.LbTableRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+		Me.LbTableRefresh.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LbTableRefresh.Cursor = System.Windows.Forms.Cursors.Hand
+		Me.LbTableRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.LbTableRefresh.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+		Me.LbTableRefresh.ForeColor = System.Drawing.Color.Blue
+		Me.LbTableRefresh.Location = New System.Drawing.Point(0, 182)
+		Me.LbTableRefresh.Margin = New System.Windows.Forms.Padding(0)
+		Me.LbTableRefresh.Name = "LbTableRefresh"
+		Me.LbTableRefresh.Size = New System.Drawing.Size(101, 22)
+		Me.LbTableRefresh.TabIndex = 20
+		Me.LbTableRefresh.Text = "Refresh"
+		Me.LbTableRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		'
+		'LbSQLiteBrowse
+		'
+		Me.LbSQLiteBrowse.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LbSQLiteBrowse.Cursor = System.Windows.Forms.Cursors.Hand
+		Me.LbSQLiteBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.LbSQLiteBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+		Me.LbSQLiteBrowse.ForeColor = System.Drawing.Color.Blue
+		Me.LbSQLiteBrowse.Location = New System.Drawing.Point(178, 0)
+		Me.LbSQLiteBrowse.Margin = New System.Windows.Forms.Padding(0)
+		Me.LbSQLiteBrowse.Name = "LbSQLiteBrowse"
+		Me.LbSQLiteBrowse.Size = New System.Drawing.Size(22, 22)
+		Me.LbSQLiteBrowse.TabIndex = 18
+		Me.LbSQLiteBrowse.Text = "..."
+		Me.LbSQLiteBrowse.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'LbCollapse
 		'
@@ -102,7 +119,7 @@ Partial Class MainX
 		Me.LbCollapse.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbCollapse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.LbCollapse.ForeColor = System.Drawing.Color.Blue
-		Me.LbCollapse.Location = New System.Drawing.Point(178, 126)
+		Me.LbCollapse.Location = New System.Drawing.Point(178, 140)
 		Me.LbCollapse.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbCollapse.Name = "LbCollapse"
 		Me.LbCollapse.Size = New System.Drawing.Size(22, 22)
@@ -118,10 +135,10 @@ Partial Class MainX
 		Me.LbImport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbImport.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.LbImport.ForeColor = System.Drawing.Color.Blue
-		Me.LbImport.Location = New System.Drawing.Point(125, 299)
+		Me.LbImport.Location = New System.Drawing.Point(100, 182)
 		Me.LbImport.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbImport.Name = "LbImport"
-		Me.LbImport.Size = New System.Drawing.Size(75, 22)
+		Me.LbImport.Size = New System.Drawing.Size(100, 22)
 		Me.LbImport.TabIndex = 17
 		Me.LbImport.Text = "Import"
 		Me.LbImport.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -132,7 +149,7 @@ Partial Class MainX
 		Me.LbStatus.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.LbStatus.ForeColor = System.Drawing.Color.Red
-		Me.LbStatus.Location = New System.Drawing.Point(0, 126)
+		Me.LbStatus.Location = New System.Drawing.Point(0, 140)
 		Me.LbStatus.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbStatus.Name = "LbStatus"
 		Me.LbStatus.Size = New System.Drawing.Size(179, 22)
@@ -146,10 +163,10 @@ Partial Class MainX
 		Me.LBoxTable.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.LBoxTable.ForeColor = System.Drawing.Color.Black
 		Me.LBoxTable.FormattingEnabled = True
-		Me.LBoxTable.Location = New System.Drawing.Point(0, 320)
+		Me.LBoxTable.Location = New System.Drawing.Point(0, 203)
 		Me.LBoxTable.Margin = New System.Windows.Forms.Padding(0)
 		Me.LBoxTable.Name = "LBoxTable"
-		Me.LBoxTable.Size = New System.Drawing.Size(200, 132)
+		Me.LBoxTable.Size = New System.Drawing.Size(200, 249)
 		Me.LBoxTable.TabIndex = 13
 		Me.LBoxTable.TabStop = False
 		'
@@ -157,48 +174,22 @@ Partial Class MainX
 		'
 		Me.Label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.Label7.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label7.Location = New System.Drawing.Point(0, 299)
+		Me.Label7.Location = New System.Drawing.Point(0, 161)
 		Me.Label7.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label7.Name = "Label7"
-		Me.Label7.Size = New System.Drawing.Size(126, 22)
+		Me.Label7.Size = New System.Drawing.Size(200, 22)
 		Me.Label7.TabIndex = 14
 		Me.Label7.Text = "Table List"
 		Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-		'
-		'LBoxDatabase
-		'
-		Me.LBoxDatabase.BackColor = System.Drawing.Color.White
-		Me.LBoxDatabase.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.LBoxDatabase.ForeColor = System.Drawing.Color.Black
-		Me.LBoxDatabase.FormattingEnabled = True
-		Me.LBoxDatabase.Location = New System.Drawing.Point(0, 168)
-		Me.LBoxDatabase.Margin = New System.Windows.Forms.Padding(0)
-		Me.LBoxDatabase.Name = "LBoxDatabase"
-		Me.LBoxDatabase.Size = New System.Drawing.Size(200, 132)
-		Me.LBoxDatabase.TabIndex = 1
-		Me.LBoxDatabase.TabStop = False
-		'
-		'Label8
-		'
-		Me.Label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.Label8.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label8.Location = New System.Drawing.Point(0, 147)
-		Me.Label8.Margin = New System.Windows.Forms.Padding(0)
-		Me.Label8.Name = "Label8"
-		Me.Label8.Size = New System.Drawing.Size(200, 22)
-		Me.Label8.TabIndex = 12
-		Me.Label8.Text = "Database List"
-		Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'LbConnect
 		'
 		Me.LbConnect.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.LbConnect.Cursor = System.Windows.Forms.Cursors.Hand
-		Me.LbConnect.Enabled = False
 		Me.LbConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbConnect.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.LbConnect.ForeColor = System.Drawing.Color.Blue
-		Me.LbConnect.Location = New System.Drawing.Point(0, 105)
+		Me.LbConnect.Location = New System.Drawing.Point(0, 21)
 		Me.LbConnect.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbConnect.Name = "LbConnect"
 		Me.LbConnect.Size = New System.Drawing.Size(200, 22)
@@ -206,80 +197,16 @@ Partial Class MainX
 		Me.LbConnect.Text = "Connect"
 		Me.LbConnect.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
-		'TxPassword
-		'
-		Me.TxPassword.BackColor = System.Drawing.Color.White
-		Me.TxPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.TxPassword.ForeColor = System.Drawing.Color.Black
-		Me.TxPassword.Location = New System.Drawing.Point(49, 84)
-		Me.TxPassword.Margin = New System.Windows.Forms.Padding(0)
-		Me.TxPassword.Name = "TxPassword"
-		Me.TxPassword.Size = New System.Drawing.Size(151, 22)
-		Me.TxPassword.TabIndex = 3
-		Me.TxPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-		Me.TxPassword.UseSystemPasswordChar = True
-		Me.TxPassword.WordWrap = False
-		'
-		'TxUsername
-		'
-		Me.TxUsername.BackColor = System.Drawing.Color.White
-		Me.TxUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.TxUsername.ForeColor = System.Drawing.Color.Black
-		Me.TxUsername.Location = New System.Drawing.Point(49, 63)
-		Me.TxUsername.Margin = New System.Windows.Forms.Padding(0)
-		Me.TxUsername.Name = "TxUsername"
-		Me.TxUsername.Size = New System.Drawing.Size(151, 22)
-		Me.TxUsername.TabIndex = 2
-		Me.TxUsername.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-		Me.TxUsername.WordWrap = False
-		'
-		'Label5
-		'
-		Me.Label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.Label5.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label5.Location = New System.Drawing.Point(0, 84)
-		Me.Label5.Margin = New System.Windows.Forms.Padding(0)
-		Me.Label5.Name = "Label5"
-		Me.Label5.Size = New System.Drawing.Size(50, 22)
-		Me.Label5.TabIndex = 9
-		Me.Label5.Text = "Pass:"
-		Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-		'
-		'Label6
-		'
-		Me.Label6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.Label6.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label6.Location = New System.Drawing.Point(0, 63)
-		Me.Label6.Margin = New System.Windows.Forms.Padding(0)
-		Me.Label6.Name = "Label6"
-		Me.Label6.Size = New System.Drawing.Size(50, 22)
-		Me.Label6.TabIndex = 8
-		Me.Label6.Text = "User:"
-		Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-		'
-		'CbAuthentication
-		'
-		Me.CbAuthentication.BackColor = System.Drawing.Color.White
-		Me.CbAuthentication.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-		Me.CbAuthentication.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.CbAuthentication.ForeColor = System.Drawing.Color.Black
-		Me.CbAuthentication.FormattingEnabled = True
-		Me.CbAuthentication.Items.AddRange(New Object() {"Windows", "SQL Server"})
-		Me.CbAuthentication.Location = New System.Drawing.Point(50, 43)
-		Me.CbAuthentication.Margin = New System.Windows.Forms.Padding(0)
-		Me.CbAuthentication.Name = "CbAuthentication"
-		Me.CbAuthentication.Size = New System.Drawing.Size(150, 21)
-		Me.CbAuthentication.TabIndex = 1
-		'
 		'TxServerName
 		'
 		Me.TxServerName.BackColor = System.Drawing.Color.White
 		Me.TxServerName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.TxServerName.ForeColor = System.Drawing.Color.Black
-		Me.TxServerName.Location = New System.Drawing.Point(49, 21)
+		Me.TxServerName.Location = New System.Drawing.Point(49, 0)
 		Me.TxServerName.Margin = New System.Windows.Forms.Padding(0)
 		Me.TxServerName.Name = "TxServerName"
-		Me.TxServerName.Size = New System.Drawing.Size(151, 22)
+		Me.TxServerName.ReadOnly = True
+		Me.TxServerName.Size = New System.Drawing.Size(130, 22)
 		Me.TxServerName.TabIndex = 0
 		Me.TxServerName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		Me.TxServerName.WordWrap = False
@@ -288,50 +215,28 @@ Partial Class MainX
 		'
 		Me.Label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.Label3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label3.Location = New System.Drawing.Point(0, 21)
+		Me.Label3.Location = New System.Drawing.Point(0, 0)
 		Me.Label3.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label3.Name = "Label3"
 		Me.Label3.Size = New System.Drawing.Size(50, 22)
 		Me.Label3.TabIndex = 6
-		Me.Label3.Text = "Name:"
+		Me.Label3.Text = "File:"
 		Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		'
-		'Label2
+		'LbCreateConnect
 		'
-		Me.Label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.Label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-		Me.Label2.Location = New System.Drawing.Point(49, 0)
-		Me.Label2.Margin = New System.Windows.Forms.Padding(0)
-		Me.Label2.Name = "Label2"
-		Me.Label2.Size = New System.Drawing.Size(151, 22)
-		Me.Label2.TabIndex = 5
-		Me.Label2.Text = "Database Engine"
-		Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-		'
-		'Label1
-		'
-		Me.Label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.Label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label1.Location = New System.Drawing.Point(0, 0)
-		Me.Label1.Margin = New System.Windows.Forms.Padding(0)
-		Me.Label1.Name = "Label1"
-		Me.Label1.Size = New System.Drawing.Size(50, 22)
-		Me.Label1.TabIndex = 4
-		Me.Label1.Text = "Type:"
-		Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-		'
-		'Label4
-		'
-		Me.Label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.Label4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label4.Location = New System.Drawing.Point(0, 42)
-		Me.Label4.Margin = New System.Windows.Forms.Padding(0)
-		Me.Label4.Name = "Label4"
-		Me.Label4.Size = New System.Drawing.Size(50, 22)
-		Me.Label4.TabIndex = 7
-		Me.Label4.Text = "Auth:"
-		Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+		Me.LbCreateConnect.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LbCreateConnect.Cursor = System.Windows.Forms.Cursors.Hand
+		Me.LbCreateConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.LbCreateConnect.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+		Me.LbCreateConnect.ForeColor = System.Drawing.Color.Blue
+		Me.LbCreateConnect.Location = New System.Drawing.Point(0, 42)
+		Me.LbCreateConnect.Margin = New System.Windows.Forms.Padding(0)
+		Me.LbCreateConnect.Name = "LbCreateConnect"
+		Me.LbCreateConnect.Size = New System.Drawing.Size(200, 22)
+		Me.LbCreateConnect.TabIndex = 19
+		Me.LbCreateConnect.Text = "Create New Database then Connect"
+		Me.LbCreateConnect.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'BgTryConnect
 		'
@@ -491,14 +396,6 @@ Partial Class MainX
 		'BgExport
 		'
 		'
-		'FdBrowse
-		'
-		Me.FdBrowse.Description = "Select a folder for Export"
-		'
-		'opDialog
-		'
-		Me.opDialog.Filter = "Excel files|*.xlsx; *.xlsb; *.xlsm; *.xls"
-		'
 		'BgImport
 		'
 		'
@@ -534,19 +431,9 @@ Partial Class MainX
 
 	Friend WithEvents panMenu As Panel
 	Friend WithEvents LbConnect As Label
-	Friend WithEvents TxPassword As TextBox
-	Friend WithEvents TxUsername As TextBox
-	Friend WithEvents Label5 As Label
-	Friend WithEvents Label6 As Label
-	Friend WithEvents Label4 As Label
-	Friend WithEvents CbAuthentication As ComboBox
 	Friend WithEvents TxServerName As TextBox
 	Friend WithEvents Label3 As Label
-	Friend WithEvents Label2 As Label
-	Friend WithEvents Label1 As Label
 	Friend WithEvents BgTryConnect As System.ComponentModel.BackgroundWorker
-	Friend WithEvents LBoxDatabase As ListBox
-	Friend WithEvents Label8 As Label
 	Friend WithEvents LBoxTable As ListBox
 	Friend WithEvents Label7 As Label
 	Friend WithEvents BGgetDetails As System.ComponentModel.BackgroundWorker
@@ -568,4 +455,7 @@ Partial Class MainX
 	Friend WithEvents LbImport As Label
 	Friend WithEvents opDialog As OpenFileDialog
 	Friend WithEvents BgImport As System.ComponentModel.BackgroundWorker
+	Friend WithEvents LbCreateConnect As Label
+	Friend WithEvents LbSQLiteBrowse As Label
+	Friend WithEvents LbTableRefresh As Label
 End Class

@@ -5,16 +5,15 @@
 
 #Region "SQL Query"
 
-	Friend Function SQLReadQuery(ByVal queryX As String, ByVal timeXout As Integer, ByVal connection As String, Optional ByVal DatabaseName As String = "") As DataTable
-		Using conX As New SqlClient.SqlConnection(connection), comX As New SqlClient.SqlCommand, dataTableX As New DataTable
+	Friend Function SQLReadQuery(ByVal queryX As String, ByVal timeXout As Integer, ByVal connection As String) As DataTable
+		Using conX As New SQLite.SQLiteConnection(connection), comX As New SQLite.SQLiteCommand, dataTableX As New DataTable
 			If conX.State = Data.ConnectionState.Closed Then conX.Open()
-			If Not String.IsNullOrEmpty(DatabaseName.Trim) Then conX.ChangeDatabase(DatabaseName.Trim)
 			With comX
 				.Connection = conX
 				.CommandTimeout = timeXout
-				.CommandText = "set nocount on " & vbCrLf & queryX.Trim
+				.CommandText = queryX.Trim
 			End With
-			Using readerX As SqlClient.SqlDataReader = comX.ExecuteReader()
+			Using readerX As SQLite.SQLiteDataReader = comX.ExecuteReader()
 				dataTableX.Load(readerX)
 			End Using
 			comX.Cancel()
@@ -23,14 +22,13 @@
 		End Using
 	End Function
 
-	Friend Sub SQLWriteQuery(ByVal queryX As String, ByVal timeXout As Integer, connection As String, Optional ByVal DatabaseName As String = "")
-		Using conX As New SqlClient.SqlConnection(connection), comX As New SqlClient.SqlCommand
+	Friend Sub SQLWriteQuery(ByVal queryX As String, ByVal timeXout As Integer, connection As String)
+		Using conX As New SQLite.SQLiteConnection(connection), comX As New SQLite.SQLiteCommand
 			If conX.State = ConnectionState.Closed Then conX.Open()
-			If Not String.IsNullOrEmpty(DatabaseName.Trim) Then conX.ChangeDatabase(DatabaseName.Trim)
 			With comX
 				.Connection = conX
 				.CommandTimeout = timeXout
-				.CommandText = "set nocount on; " & Trim(queryX)
+				.CommandText = Trim(queryX)
 				.ExecuteNonQuery()
 			End With
 		End Using
