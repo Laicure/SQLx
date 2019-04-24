@@ -1,5 +1,5 @@
 # SQLx
-Portable SQL script editor/executor based on SQLClient and SQLite
+Portable SQL script editor/executor based on SQLClient
 
 <a href="https://github.com/Laicure/SQLx/releases/latest"><img src="https://img.shields.io/github/downloads/Laicure/SQLx/total.svg"></img></a>
 <a href="https://github.com/Laicure/SQLx/commits/master"><img src="https://img.shields.io/github/last-commit/Laicure/SQLx.svg"></img></a>
