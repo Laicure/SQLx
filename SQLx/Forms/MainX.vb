@@ -39,7 +39,7 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbConnect_Click(sender As Object, e As EventArgs) Handles LbConnect.Click
-		If BgImport.IsBusy Or BgTryConnect.IsBusy Or BgExecute.IsBusy Or BGgetDetails.IsBusy Or String.IsNullOrEmpty(TxServerName.Text.Trim) Then Exit Sub
+		If BgImport.IsBusy Or BgTryConnect.IsBusy Or BgExecute.IsBusy Or BGgetDetails.IsBusy Or String.IsNullOrEmpty(TxServerName.Text.Trim) Or FileMissing(SQLiteFile) Then Exit Sub
 
 		LbConnect.Text = "Connecting..."
 
@@ -182,12 +182,7 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbExecute_Click(sender As Object, e As EventArgs) Handles LbExecute.Click
-		If String.IsNullOrEmpty(TxQuery.Text.Trim) Or BgExecute.IsBusy Or BgTryConnect.IsBusy Or Not Connected Then Exit Sub
-
-		If Not My.Computer.FileSystem.FileExists(SQLiteFile) Then
-			MessageBox.Show("Database file seems to be missing." & vbCrLf & vbCrLf & "File: " & SQLiteFile, "Database file not found!", MessageBoxButtons.OK, MessageBoxIcon.Error)
-			Exit Sub
-		End If
+		If String.IsNullOrEmpty(TxQuery.Text.Trim) Or BgExecute.IsBusy Or BgTryConnect.IsBusy Or Not Connected Or FileMissing(SQLiteFile) Then Exit Sub
 
 		LbExecute.Text = "Executing..."
 		LbExecute.Enabled = False
@@ -250,12 +245,7 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbImport_MouseDown(sender As Object, e As MouseEventArgs) Handles LbImport.MouseDown
-		If BGgetDetails.IsBusy Or BgImport.IsBusy Or BgTryConnect.IsBusy Or Not Connected Then Exit Sub
-
-		If Not My.Computer.FileSystem.FileExists(SQLiteFile) Then
-			MessageBox.Show("Database file seems to be missing." & vbCrLf & vbCrLf & "File: " & SQLiteFile, "Database file not found!", MessageBoxButtons.OK, MessageBoxIcon.Error)
-			Exit Sub
-		End If
+		If BGgetDetails.IsBusy Or BgImport.IsBusy Or BgTryConnect.IsBusy Or Not Connected Or FileMissing(SQLiteFile) Then Exit Sub
 
 		If LBoxTable.SelectedIndices.Count = 0 Then
 			MessageBox.Show("Please select a table for import!", "Select first!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -375,12 +365,7 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbTableRefresh_Click(sender As Object, e As EventArgs) Handles LbTableRefresh.Click
-		If Not Connected Then Exit Sub
-
-		If Not My.Computer.FileSystem.FileExists(SQLiteFile) Then
-			MessageBox.Show("Database file seems to be missing." & vbCrLf & vbCrLf & "File: " & SQLiteFile, "Database file not found!", MessageBoxButtons.OK, MessageBoxIcon.Error)
-			Exit Sub
-		End If
+		If Not Connected Or FileMissing(SQLiteFile) Then Exit Sub
 
 		If Not BGgetDetails.IsBusy Then
 			LbTableRefresh.Text = "Refreshing..."
@@ -399,5 +384,24 @@ Public Class MainX
 			End With
 		End If
 	End Sub
+
+	Private Function FileMissing(ByVal filePath As String) As Boolean
+		If Not My.Computer.FileSystem.FileExists(filePath) Then
+			With LbStatus
+				.Text = ">> Disconnected <<"
+				Connected = False
+				.ForeColor = Color.Red
+			End With
+			With LBoxTable
+				.BeginUpdate()
+				.Items.Clear()
+				.EndUpdate()
+			End With
+			MessageBox.Show("Database file seems to be missing." & vbCrLf & vbCrLf & "File: " & filePath, "Database file not found!", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			Return True
+		Else
+			Return False
+		End If
+	End Function
 
 End Class
