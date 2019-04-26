@@ -23,6 +23,7 @@ Partial Class MainX
 	<System.Diagnostics.DebuggerStepThrough()>
 	Private Sub InitializeComponent()
 		Me.panMenu = New System.Windows.Forms.Panel()
+		Me.LbTableRefresh = New System.Windows.Forms.Label()
 		Me.LbCollapse = New System.Windows.Forms.Label()
 		Me.LbImport = New System.Windows.Forms.Label()
 		Me.LbStatus = New System.Windows.Forms.Label()
@@ -69,6 +70,7 @@ Partial Class MainX
 		'
 		'panMenu
 		'
+		Me.panMenu.Controls.Add(Me.LbTableRefresh)
 		Me.panMenu.Controls.Add(Me.LbCollapse)
 		Me.panMenu.Controls.Add(Me.LbImport)
 		Me.panMenu.Controls.Add(Me.LbStatus)
@@ -93,6 +95,22 @@ Partial Class MainX
 		Me.panMenu.Name = "panMenu"
 		Me.panMenu.Size = New System.Drawing.Size(200, 452)
 		Me.panMenu.TabIndex = 0
+		'
+		'LbTableRefresh
+		'
+		Me.LbTableRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+		Me.LbTableRefresh.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LbTableRefresh.Cursor = System.Windows.Forms.Cursors.Hand
+		Me.LbTableRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.LbTableRefresh.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+		Me.LbTableRefresh.ForeColor = System.Drawing.Color.Blue
+		Me.LbTableRefresh.Location = New System.Drawing.Point(51, 299)
+		Me.LbTableRefresh.Margin = New System.Windows.Forms.Padding(0)
+		Me.LbTableRefresh.Name = "LbTableRefresh"
+		Me.LbTableRefresh.Size = New System.Drawing.Size(75, 22)
+		Me.LbTableRefresh.TabIndex = 18
+		Me.LbTableRefresh.Text = "Refresh"
+		Me.LbTableRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'LbCollapse
 		'
@@ -160,9 +178,9 @@ Partial Class MainX
 		Me.Label7.Location = New System.Drawing.Point(0, 299)
 		Me.Label7.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label7.Name = "Label7"
-		Me.Label7.Size = New System.Drawing.Size(126, 22)
+		Me.Label7.Size = New System.Drawing.Size(52, 22)
 		Me.Label7.TabIndex = 14
-		Me.Label7.Text = "Table List"
+		Me.Label7.Text = "Table"
 		Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'LBoxDatabase
@@ -568,4 +586,5 @@ Partial Class MainX
 	Friend WithEvents LbImport As Label
 	Friend WithEvents opDialog As OpenFileDialog
 	Friend WithEvents BgImport As System.ComponentModel.BackgroundWorker
+	Friend WithEvents LbTableRefresh As Label
 End Class
