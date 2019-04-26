@@ -23,10 +23,10 @@ Partial Class MainX
 	<System.Diagnostics.DebuggerStepThrough()>
 	Private Sub InitializeComponent()
 		Me.panMenu = New System.Windows.Forms.Panel()
-		Me.LbTableRefresh = New System.Windows.Forms.Label()
-		Me.LbSQLiteBrowse = New System.Windows.Forms.Label()
 		Me.LbCollapse = New System.Windows.Forms.Label()
 		Me.LbImport = New System.Windows.Forms.Label()
+		Me.LbSQLiteBrowse = New System.Windows.Forms.Label()
+		Me.LbTableRefresh = New System.Windows.Forms.Label()
 		Me.LbStatus = New System.Windows.Forms.Label()
 		Me.LBoxTable = New System.Windows.Forms.ListBox()
 		Me.Label7 = New System.Windows.Forms.Label()
@@ -68,48 +68,17 @@ Partial Class MainX
 		Me.panMenu.Controls.Add(Me.LbTableRefresh)
 		Me.panMenu.Controls.Add(Me.LbStatus)
 		Me.panMenu.Controls.Add(Me.LBoxTable)
-		Me.panMenu.Controls.Add(Me.Label7)
 		Me.panMenu.Controls.Add(Me.LbConnect)
 		Me.panMenu.Controls.Add(Me.TxServerName)
 		Me.panMenu.Controls.Add(Me.Label3)
 		Me.panMenu.Controls.Add(Me.LbCreateConnect)
+		Me.panMenu.Controls.Add(Me.Label7)
 		Me.panMenu.Dock = System.Windows.Forms.DockStyle.Left
 		Me.panMenu.Location = New System.Drawing.Point(1, 1)
 		Me.panMenu.Margin = New System.Windows.Forms.Padding(0)
 		Me.panMenu.Name = "panMenu"
 		Me.panMenu.Size = New System.Drawing.Size(200, 452)
 		Me.panMenu.TabIndex = 0
-		'
-		'LbTableRefresh
-		'
-		Me.LbTableRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-		Me.LbTableRefresh.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.LbTableRefresh.Cursor = System.Windows.Forms.Cursors.Hand
-		Me.LbTableRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.LbTableRefresh.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-		Me.LbTableRefresh.ForeColor = System.Drawing.Color.Blue
-		Me.LbTableRefresh.Location = New System.Drawing.Point(0, 182)
-		Me.LbTableRefresh.Margin = New System.Windows.Forms.Padding(0)
-		Me.LbTableRefresh.Name = "LbTableRefresh"
-		Me.LbTableRefresh.Size = New System.Drawing.Size(101, 22)
-		Me.LbTableRefresh.TabIndex = 20
-		Me.LbTableRefresh.Text = "Refresh"
-		Me.LbTableRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-		'
-		'LbSQLiteBrowse
-		'
-		Me.LbSQLiteBrowse.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.LbSQLiteBrowse.Cursor = System.Windows.Forms.Cursors.Hand
-		Me.LbSQLiteBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.LbSQLiteBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-		Me.LbSQLiteBrowse.ForeColor = System.Drawing.Color.Blue
-		Me.LbSQLiteBrowse.Location = New System.Drawing.Point(178, 0)
-		Me.LbSQLiteBrowse.Margin = New System.Windows.Forms.Padding(0)
-		Me.LbSQLiteBrowse.Name = "LbSQLiteBrowse"
-		Me.LbSQLiteBrowse.Size = New System.Drawing.Size(22, 22)
-		Me.LbSQLiteBrowse.TabIndex = 18
-		Me.LbSQLiteBrowse.Text = "..."
-		Me.LbSQLiteBrowse.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'LbCollapse
 		'
@@ -142,6 +111,37 @@ Partial Class MainX
 		Me.LbImport.TabIndex = 17
 		Me.LbImport.Text = "Import"
 		Me.LbImport.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		'
+		'LbSQLiteBrowse
+		'
+		Me.LbSQLiteBrowse.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LbSQLiteBrowse.Cursor = System.Windows.Forms.Cursors.Hand
+		Me.LbSQLiteBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.LbSQLiteBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+		Me.LbSQLiteBrowse.ForeColor = System.Drawing.Color.Blue
+		Me.LbSQLiteBrowse.Location = New System.Drawing.Point(178, 0)
+		Me.LbSQLiteBrowse.Margin = New System.Windows.Forms.Padding(0)
+		Me.LbSQLiteBrowse.Name = "LbSQLiteBrowse"
+		Me.LbSQLiteBrowse.Size = New System.Drawing.Size(22, 22)
+		Me.LbSQLiteBrowse.TabIndex = 18
+		Me.LbSQLiteBrowse.Text = "..."
+		Me.LbSQLiteBrowse.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		'
+		'LbTableRefresh
+		'
+		Me.LbTableRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+		Me.LbTableRefresh.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LbTableRefresh.Cursor = System.Windows.Forms.Cursors.Hand
+		Me.LbTableRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.LbTableRefresh.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+		Me.LbTableRefresh.ForeColor = System.Drawing.Color.Blue
+		Me.LbTableRefresh.Location = New System.Drawing.Point(0, 182)
+		Me.LbTableRefresh.Margin = New System.Windows.Forms.Padding(0)
+		Me.LbTableRefresh.Name = "LbTableRefresh"
+		Me.LbTableRefresh.Size = New System.Drawing.Size(101, 22)
+		Me.LbTableRefresh.TabIndex = 20
+		Me.LbTableRefresh.Text = "Refresh"
+		Me.LbTableRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'LbStatus
 		'

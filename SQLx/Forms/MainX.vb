@@ -7,12 +7,13 @@ Public Class MainX
 	Dim ExecuteBSData As New BindingSource
 	Dim TableList() As String = {}
 	Dim ColumnList() As String = {}
+	Dim WithTruncate As Boolean = False
 	Dim pendingRefresh As Boolean = False
 	Dim Connected As Boolean = False
 	Dim SQLiteFile As String = ""
 
 	Private Sub MainX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-		Me.Icon = My.Resources.database
+		Me.Icon = My.Resources.art
 		Me.Text = "SQLx [Build Date: " & My.Computer.FileSystem.GetFileInfo(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName).LastWriteTimeUtc.ToString("yyyy-MM-dd HH:mm:ss") & " UTC]"
 
 		ApplyDataGridViewProperties(DgData)
@@ -102,10 +103,33 @@ Public Class MainX
 
 	Private Sub BGgetDetails_DoWork(sender As Object, e As DoWorkEventArgs) Handles BGgetDetails.DoWork
 		Threading.Thread.Sleep(222)
-		TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master where type='table';", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("tbl_name")).Distinct.ToArray
+		Try
+			TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master where type='table';", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("tbl_name")).Distinct.ToArray
+			errx = {}
+		Catch ex As Exception
+			errx = {Err.Description, Err.Source}
+		End Try
 	End Sub
 
 	Private Sub BGgetDetails_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BGgetDetails.RunWorkerCompleted
+		If errx.Count = 2 Then
+			If pendingRefresh Then pendingRefresh = False
+
+			With LbStatus
+				.Text = ">> Disconnected <<"
+				Connected = False
+				.ForeColor = Color.Red
+			End With
+			With LBoxTable
+				.BeginUpdate()
+				.Items.Clear()
+				.EndUpdate()
+			End With
+
+			MessageBox.Show(errx(0), errx(1), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+			Exit Sub
+		End If
+
 		If pendingRefresh Then
 			pendingRefresh = False
 			LbTableRefresh.Text = "Refreshing..."
@@ -151,7 +175,7 @@ Public Class MainX
 			With LbCollapse
 				.Text = "<"
 				.Height = 22
-				.Top = 135
+				.Top = 140
 				.Left = 178
 			End With
 		End If
@@ -223,7 +247,13 @@ Public Class MainX
 		LbExport.Text = "Export"
 	End Sub
 
-	Private Sub LbImport_Click(sender As Object, e As EventArgs) Handles LbImport.Click
+	Private Sub LbImport_MouseDown(sender As Object, e As MouseEventArgs) Handles LbImport.MouseDown
+		If e.Button = System.Windows.Forms.MouseButtons.Right Then
+			WithTruncate = True
+		Else
+			WithTruncate = False
+		End If
+
 		If BGgetDetails.IsBusy Or BgImport.IsBusy Or BgTryConnect.IsBusy Or Not Connected Then Exit Sub
 
 		If Not My.Computer.FileSystem.FileExists(SQLiteFile) Then
@@ -252,14 +282,29 @@ Public Class MainX
 		Dim excelData As New DataTable
 		excelData = ReadExcel(e.Argument.ToString, ColumnList).Copy
 		If excelData.Rows.Count > 0 Then
+			If WithTruncate Then
+				SQLWriteQuery("delete * from " & selectedTable, 60, SQLConn)
+				SQLWriteQuery("vacuum", 60, SQLConn)
+			End If
 			Try
-				For Each dr As DataRow In excelData.Rows
-					Dim valuez As New List(Of String)
-					For Each dc As DataColumn In excelData.Columns
-						valuez.Add(dr.Item(dc).ToString.Replace("'", ""))
-					Next
-					SQLWriteQuery("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')", 500, SQLConn)
-				Next
+				Using conX As New SQLite.SQLiteConnection(SQLConn), comX As New SQLite.SQLiteCommand
+					If conX.State = ConnectionState.Closed Then conX.Open()
+					With comX
+						.Connection = conX
+						.CommandTimeout = 500
+						Using transX As SQLite.SQLiteTransaction = conX.BeginTransaction
+							For Each dr As DataRow In excelData.Rows
+								Dim valuez As New List(Of String)
+								For Each dc As DataColumn In excelData.Columns
+									valuez.Add(dr.Item(dc).ToString.Replace("'", ""))
+								Next
+								.CommandText = Trim("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')")
+								.ExecuteNonQuery()
+							Next
+							transX.Commit()
+						End Using
+					End With
+				End Using
 				errx = {}
 			Catch ex As Exception
 				errx = {Err.Description, Err.Source}
