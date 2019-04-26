@@ -97,7 +97,7 @@ Public Class MainX
 			End If
 		End If
 
-		LbConnect.Text = "Connect"
+		LbConnect.Text = "Reconnect"
 		LbCreateConnect.Text = "Create New Database then Connect"
 	End Sub
 
@@ -194,6 +194,8 @@ Public Class MainX
 		TxQuery.ReadOnly = True
 		LbDataCount.Text = "Loading..."
 		BgExecute.RunWorkerAsync({TxQuery.Text.Trim})
+
+		If TxQuery.Text.ToLower.Contains("create") Or TxQuery.Text.ToLower.Contains("drop") Then LbTableRefresh_Click(sender, Nothing)
 	End Sub
 
 	Private Sub BgExecute_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BgExecute.DoWork
@@ -248,12 +250,6 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbImport_MouseDown(sender As Object, e As MouseEventArgs) Handles LbImport.MouseDown
-		If e.Button = System.Windows.Forms.MouseButtons.Right Then
-			WithTruncate = True
-		Else
-			WithTruncate = False
-		End If
-
 		If BGgetDetails.IsBusy Or BgImport.IsBusy Or BgTryConnect.IsBusy Or Not Connected Then Exit Sub
 
 		If Not My.Computer.FileSystem.FileExists(SQLiteFile) Then
@@ -264,6 +260,16 @@ Public Class MainX
 		If LBoxTable.SelectedIndices.Count = 0 Then
 			MessageBox.Show("Please select a table for import!", "Select first!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 			Exit Sub
+		End If
+
+		If e.Button = System.Windows.Forms.MouseButtons.Right Then
+			If MessageBox.Show("Are you sure to truncate the table before import?" & vbCrLf & "This will delete all data before importing!", "Confirm!", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
+				WithTruncate = True
+			Else
+				Exit Sub
+			End If
+		Else
+			WithTruncate = False
 		End If
 
 		With opDialog
