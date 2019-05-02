@@ -29,11 +29,11 @@ Partial Class MainX
 		Me.LbTableRefresh = New System.Windows.Forms.Label()
 		Me.LbStatus = New System.Windows.Forms.Label()
 		Me.LBoxTable = New System.Windows.Forms.ListBox()
-		Me.Label7 = New System.Windows.Forms.Label()
 		Me.LbConnect = New System.Windows.Forms.Label()
 		Me.TxServerName = New System.Windows.Forms.TextBox()
 		Me.Label3 = New System.Windows.Forms.Label()
 		Me.LbCreateConnect = New System.Windows.Forms.Label()
+		Me.Label7 = New System.Windows.Forms.Label()
 		Me.BgTryConnect = New System.ComponentModel.BackgroundWorker()
 		Me.BGgetDetails = New System.ComponentModel.BackgroundWorker()
 		Me.SplitCon = New System.Windows.Forms.SplitContainer()
@@ -170,18 +170,6 @@ Partial Class MainX
 		Me.LBoxTable.TabIndex = 13
 		Me.LBoxTable.TabStop = False
 		'
-		'Label7
-		'
-		Me.Label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.Label7.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label7.Location = New System.Drawing.Point(0, 161)
-		Me.Label7.Margin = New System.Windows.Forms.Padding(0)
-		Me.Label7.Name = "Label7"
-		Me.Label7.Size = New System.Drawing.Size(200, 22)
-		Me.Label7.TabIndex = 14
-		Me.Label7.Text = "Table List"
-		Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-		'
 		'LbConnect
 		'
 		Me.LbConnect.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -238,6 +226,18 @@ Partial Class MainX
 		Me.LbCreateConnect.Text = "Create New Database then Connect"
 		Me.LbCreateConnect.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
+		'Label7
+		'
+		Me.Label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.Label7.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.Label7.Location = New System.Drawing.Point(0, 161)
+		Me.Label7.Margin = New System.Windows.Forms.Padding(0)
+		Me.Label7.Name = "Label7"
+		Me.Label7.Size = New System.Drawing.Size(200, 22)
+		Me.Label7.TabIndex = 14
+		Me.Label7.Text = "Table List"
+		Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		'
 		'BgTryConnect
 		'
 		'
@@ -277,8 +277,10 @@ Partial Class MainX
 		Me.TxQuery.ForeColor = System.Drawing.Color.Black
 		Me.TxQuery.Location = New System.Drawing.Point(0, 21)
 		Me.TxQuery.Margin = New System.Windows.Forms.Padding(0)
+		Me.TxQuery.MaxLength = 2147483647
 		Me.TxQuery.Multiline = True
 		Me.TxQuery.Name = "TxQuery"
+		Me.TxQuery.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
 		Me.TxQuery.Size = New System.Drawing.Size(582, 148)
 		Me.TxQuery.TabIndex = 7
 		Me.TxQuery.WordWrap = False
