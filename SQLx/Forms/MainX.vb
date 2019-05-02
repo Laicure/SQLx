@@ -17,10 +17,7 @@ Public Class MainX
 		Me.Text = "SQLx [Build Date: " & My.Computer.FileSystem.GetFileInfo(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName).LastWriteTimeUtc.ToString("yyyy-MM-dd HH:mm:ss") & " UTC]"
 
 		ApplyDataGridViewProperties(DgData)
-		With DgData
-			.DataSource = ExecuteBSData
-			.MultiSelect = True
-		End With
+		DgData.DataSource = ExecuteBSData
 
 		'set strings
 		Username = Environment.UserName

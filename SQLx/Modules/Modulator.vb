@@ -67,7 +67,7 @@
 			.TabStop = False
 			.SelectionMode = DataGridViewSelectionMode.CellSelect
 			.RowHeadersVisible = False
-			.MultiSelect = False
+			.MultiSelect = True
 			.AllowUserToAddRows = False
 			.AllowUserToDeleteRows = False
 			.AllowUserToOrderColumns = False
