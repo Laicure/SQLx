@@ -390,8 +390,10 @@ Partial Class MainX
 		Me.TxQuery.ForeColor = System.Drawing.Color.Black
 		Me.TxQuery.Location = New System.Drawing.Point(0, 21)
 		Me.TxQuery.Margin = New System.Windows.Forms.Padding(0)
+		Me.TxQuery.MaxLength = 2147483647
 		Me.TxQuery.Multiline = True
 		Me.TxQuery.Name = "TxQuery"
+		Me.TxQuery.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
 		Me.TxQuery.Size = New System.Drawing.Size(582, 148)
 		Me.TxQuery.TabIndex = 7
 		Me.TxQuery.WordWrap = False
