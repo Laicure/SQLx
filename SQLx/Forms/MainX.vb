@@ -310,7 +310,7 @@ Public Class MainX
 							For Each dr As DataRow In excelData.Rows
 								Dim valuez As New List(Of String)
 								For Each dc As DataColumn In excelData.Columns
-									valuez.Add(dr.Item(dc).ToString.Replace("'", ""))
+									valuez.Add(dr.Item(dc).ToString)
 								Next
 								.CommandText = Trim("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')")
 								.ExecuteNonQuery()
