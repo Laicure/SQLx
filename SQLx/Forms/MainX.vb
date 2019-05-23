@@ -297,7 +297,7 @@ Public Class MainX
 		excelData = ReadExcel(e.Argument.ToString, ColumnList).Copy
 		If excelData.Rows.Count > 0 Then
 			If WithTruncate Then
-				SQLWriteQuery("delete * from " & selectedTable, 60, SQLConn)
+				SQLWriteQuery("delete from " & selectedTable, 60, SQLConn)
 				SQLWriteQuery("vacuum", 60, SQLConn)
 			End If
 			Try
