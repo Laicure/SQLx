@@ -36,7 +36,12 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbConnect_Click(sender As Object, e As EventArgs) Handles LbConnect.Click
-		If BgImport.IsBusy Or BgTryConnect.IsBusy Or BgExecute.IsBusy Or BGgetDetails.IsBusy Or String.IsNullOrEmpty(TxServerName.Text.Trim) Or FileMissing(SQLiteFile) Then Exit Sub
+		If BgImport.IsBusy Or BgTryConnect.IsBusy Or BgExecute.IsBusy Or BGgetDetails.IsBusy Then Exit Sub
+		If String.IsNullOrEmpty(TxServerName.Text.Trim) Then
+			LbSQLiteBrowse_Click(sender, Nothing)
+			Exit Sub
+		End If
+		If FileMissing(SQLiteFile) Then Exit Sub
 
 		LbConnect.Text = "Connecting..."
 
@@ -179,7 +184,8 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbExecute_Click(sender As Object, e As EventArgs) Handles LbExecute.Click
-		If String.IsNullOrEmpty(TxQuery.Text.Trim) Or BgExecute.IsBusy Or BgTryConnect.IsBusy Or Not Connected Or FileMissing(SQLiteFile) Then Exit Sub
+		If String.IsNullOrEmpty(TxQuery.Text.Trim) Or BgExecute.IsBusy Or BgTryConnect.IsBusy Or Not Connected Then Exit Sub
+		If FileMissing(SQLiteFile) Then Exit Sub
 
 		LbExecute.Text = "Executing..."
 		LbExecute.Enabled = False
@@ -242,7 +248,8 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbImport_MouseDown(sender As Object, e As MouseEventArgs) Handles LbImport.MouseDown
-		If BGgetDetails.IsBusy Or BgImport.IsBusy Or BgTryConnect.IsBusy Or Not Connected Or FileMissing(SQLiteFile) Then Exit Sub
+		If BGgetDetails.IsBusy Or BgImport.IsBusy Or BgTryConnect.IsBusy Or Not Connected Then Exit Sub
+		If FileMissing(SQLiteFile) Then Exit Sub
 
 		If LBoxTable.SelectedIndices.Count = 0 Then
 			MessageBox.Show("Please select a table for import!", "Select first!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -362,7 +369,8 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbTableRefresh_Click(sender As Object, e As EventArgs) Handles LbTableRefresh.Click
-		If Not Connected Or FileMissing(SQLiteFile) Then Exit Sub
+		If Not Connected Then Exit Sub
+		If FileMissing(SQLiteFile) Then Exit Sub
 
 		If Not BGgetDetails.IsBusy Then
 			LbTableRefresh.Text = "Refreshing..."
