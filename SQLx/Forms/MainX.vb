@@ -7,6 +7,7 @@ Public Class MainX
 	Dim ExecuteBSData As New BindingSource
 	Dim TableList() As String = {}
 	Dim ColumnList() As String = {}
+	Dim ColumnGetDetailMode As Boolean = False 'true if column, false if table
 	Dim WithTruncate As Boolean = False
 	Dim pendingRefresh As Boolean = False
 	Dim Connected As Boolean = False
@@ -69,11 +70,7 @@ Public Class MainX
 				Connected = False
 				.ForeColor = Color.Red
 			End With
-			With LBoxTable
-				.BeginUpdate()
-				.Items.Clear()
-				.EndUpdate()
-			End With
+			ClearTableColumn()
 			MessageBox.Show(errx(0), errx(1), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 		Else
 			With LbStatus
@@ -83,19 +80,11 @@ Public Class MainX
 			End With
 
 			If Not BGgetDetails.IsBusy Then
-				With LBoxTable
-					.BeginUpdate()
-					.Items.Clear()
-					.EndUpdate()
-				End With
-				BGgetDetails.RunWorkerAsync()
+				ClearTableColumn()
+				BGgetDetails.RunWorkerAsync(False)
 			Else
 				pendingRefresh = True
-				With LBoxTable
-					.BeginUpdate()
-					.Items.Clear()
-					.EndUpdate()
-				End With
+				ClearTableColumn()
 			End If
 		End If
 
@@ -105,12 +94,22 @@ Public Class MainX
 
 	Private Sub BGgetDetails_DoWork(sender As Object, e As DoWorkEventArgs) Handles BGgetDetails.DoWork
 		Threading.Thread.Sleep(222)
-		Try
-			TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master where type='table';", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("tbl_name")).Distinct.ToArray
-			errx = {}
-		Catch ex As Exception
-			errx = {Err.Description, Err.Source}
-		End Try
+		ColumnGetDetailMode = CBool(e.Argument)
+		If ColumnGetDetailMode Then
+			Try
+				ColumnList = SQLReadQuery("PRAGMA table_info(" & selectedTable & ")", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("name")).ToArray
+				errx = {}
+			Catch ex As Exception
+				errx = {Err.Description, Err.Source}
+			End Try
+		Else
+			Try
+				TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master where type='table';", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("tbl_name")).ToArray
+				errx = {}
+			Catch ex As Exception
+				errx = {Err.Description, Err.Source}
+			End Try
+		End If
 	End Sub
 
 	Private Sub BGgetDetails_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BGgetDetails.RunWorkerCompleted
@@ -122,11 +121,7 @@ Public Class MainX
 				Connected = False
 				.ForeColor = Color.Red
 			End With
-			With LBoxTable
-				.BeginUpdate()
-				.Items.Clear()
-				.EndUpdate()
-			End With
+			ClearTableColumn()
 
 			MessageBox.Show(errx(0), errx(1), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 			Exit Sub
@@ -135,17 +130,28 @@ Public Class MainX
 		If pendingRefresh Then
 			pendingRefresh = False
 			LbTableRefresh.Text = "Refreshing..."
-			BGgetDetails.RunWorkerAsync()
+			BGgetDetails.RunWorkerAsync(ColumnGetDetailMode)
 			Exit Sub
 		End If
 
-		If TableList.Count > 0 Then
-			With LBoxTable
-				.BeginUpdate()
-				.Items.Clear()
-				.Items.AddRange(TableList)
-				.EndUpdate()
-			End With
+		If ColumnGetDetailMode Then
+			If ColumnList.Count > 0 Then
+				With LBoxColumn
+					.BeginUpdate()
+					.Items.Clear()
+					.Items.AddRange(ColumnList)
+					.EndUpdate()
+				End With
+			End If
+		Else
+			If TableList.Count > 0 Then
+				With LBoxTable
+					.BeginUpdate()
+					.Items.Clear()
+					.Items.AddRange(TableList)
+					.EndUpdate()
+				End With
+			End If
 		End If
 
 		LbTableRefresh.Text = "Refresh"
@@ -154,8 +160,18 @@ Public Class MainX
 	Private Sub LBoxTable_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LBoxTable.SelectedIndexChanged
 		If LBoxTable.SelectedIndex >= 0 Then
 			selectedTable = LBoxTable.GetItemText(LBoxTable.SelectedItem)
+			If Not BGgetDetails.IsBusy Then
+				BGgetDetails.RunWorkerAsync(True)
+			Else
+				pendingRefresh = True
+			End If
 		Else
 			selectedTable = ""
+			With LBoxColumn
+				.BeginUpdate()
+				.Items.Clear()
+				.EndUpdate()
+			End With
 		End If
 	End Sub
 
@@ -177,7 +193,7 @@ Public Class MainX
 			With LbCollapse
 				.Text = "<"
 				.Height = 22
-				.Top = 140
+				.Top = 131
 				.Left = 178
 			End With
 		End If
@@ -277,8 +293,6 @@ Public Class MainX
 	End Sub
 
 	Private Sub BgImport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BgImport.DoWork
-		ColumnList = SQLReadQuery("PRAGMA table_info(" & selectedTable & ")", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("name")).Distinct.ToArray
-
 		Dim excelData As New DataTable
 		excelData = ReadExcel(e.Argument.ToString, ColumnList).Copy
 		If excelData.Rows.Count > 0 Then
@@ -346,7 +360,7 @@ Public Class MainX
 		If BgImport.IsBusy Or BgTryConnect.IsBusy Or BgExecute.IsBusy Or BGgetDetails.IsBusy Then Exit Sub
 
 		With FdBrowse
-			.Description = "Select a folder for creating the database"
+			.Description = "Select a folder to create the database"
 			If .ShowDialog = DialogResult.OK Then
 				SQLiteFile = .SelectedPath & "\" & Now.ToString("yyyy.MM.dd_HH.mm.ss.fff") & ".SQLite"
 				LbCreateConnect.Text = "Creating..."
@@ -374,19 +388,11 @@ Public Class MainX
 
 		If Not BGgetDetails.IsBusy Then
 			LbTableRefresh.Text = "Refreshing..."
-			With LBoxTable
-				.BeginUpdate()
-				.Items.Clear()
-				.EndUpdate()
-			End With
-			BGgetDetails.RunWorkerAsync()
+			ClearTableColumn()
+			BGgetDetails.RunWorkerAsync(False)
 		Else
 			pendingRefresh = True
-			With LBoxTable
-				.BeginUpdate()
-				.Items.Clear()
-				.EndUpdate()
-			End With
+			ClearTableColumn()
 		End If
 	End Sub
 
@@ -397,16 +403,25 @@ Public Class MainX
 				Connected = False
 				.ForeColor = Color.Red
 			End With
-			With LBoxTable
-				.BeginUpdate()
-				.Items.Clear()
-				.EndUpdate()
-			End With
+			ClearTableColumn()
 			MessageBox.Show("Database file seems to be missing." & vbCrLf & vbCrLf & "File: " & filePath, "Database file not found!", MessageBoxButtons.OK, MessageBoxIcon.Error)
 			Return True
 		Else
 			Return False
 		End If
 	End Function
+
+	Private Sub ClearTableColumn()
+		With LBoxTable
+			.BeginUpdate()
+			.Items.Clear()
+			.EndUpdate()
+		End With
+		With LBoxColumn
+			.BeginUpdate()
+			.Items.Clear()
+			.EndUpdate()
+		End With
+	End Sub
 
 End Class
