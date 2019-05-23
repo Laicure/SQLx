@@ -126,7 +126,7 @@ Module UnModulatorX
 					If Not String.IsNullOrEmpty(cellval) Then
 						rowData.Add(cellval.Replace("'", "").Trim)
 					Else
-						rowData.Add("-")
+						rowData.Add("")
 					End If
 				Next
 				excelData.Rows.Add(rowData.ToArray)
