@@ -124,7 +124,7 @@ Module UnModulatorX
 				For colx As Integer = 1 To ColCount Step 1
 					Dim cellval As String = wSheet.Cells(rowx, colx).value2
 					If Not String.IsNullOrEmpty(cellval) Then
-						rowData.Add(cellval.Trim)
+						rowData.Add(cellval.Replace("'", "").Trim)
 					Else
 						rowData.Add("")
 					End If
