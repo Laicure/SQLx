@@ -189,7 +189,7 @@ Public Class MainX
 			With LBoxDatabase
 				.BeginUpdate()
 				.Items.Clear()
-				.Items.AddRange(DatabaseList)
+				.Items.AddRange(DatabaseList.Select(Function(x) "[" & x & "]").ToArray)
 				.EndUpdate()
 				.SelectedIndex = 0
 			End With
@@ -199,7 +199,7 @@ Public Class MainX
 			With LBoxTable
 				.BeginUpdate()
 				.Items.Clear()
-				.Items.AddRange(TableList)
+				.Items.AddRange(TableList.Select(Function(x) "[" & x & "]").ToArray)
 				.EndUpdate()
 			End With
 		End If
@@ -219,6 +219,11 @@ Public Class MainX
 	Private Sub LBoxTable_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LBoxTable.SelectedIndexChanged
 		If LBoxTable.SelectedIndex >= 0 Then
 			selectedTable = LBoxTable.GetItemText(LBoxTable.SelectedItem)
+
+			With TxQuery
+				TxQuery.Text = .Text.Insert(.SelectionStart, selectedTable)
+				.Focus()
+			End With
 		Else
 			selectedTable = ""
 		End If
@@ -329,7 +334,7 @@ Public Class MainX
 		End If
 
 		If opDialog.ShowDialog = DialogResult.OK Then
-			LbImport.Text = "Importing..."
+			LbImport.Text = "Reading..."
 			BgImport.RunWorkerAsync(opDialog.FileName)
 		End If
 	End Sub
@@ -339,6 +344,10 @@ Public Class MainX
 
 		Dim excelData As New DataTable
 		excelData = ReadExcel(e.Argument.ToString, ColumnList).Copy
+		LbImport.Invoke(DirectCast(
+						Sub()
+							LbImport.Text = "Importing..."
+						End Sub, MethodInvoker))
 		If excelData.Rows.Count > 0 Then
 			Try
 				If WithTruncate Then
@@ -350,18 +359,28 @@ Public Class MainX
 					With comX
 						.Connection = conX
 						.CommandTimeout = 500
-						Using transX As SqlClient.SqlTransaction = conX.BeginTransaction
-							.Transaction = transX
-							For Each dr As DataRow In excelData.Rows
-								Dim valuez As New List(Of String)
-								For Each dc As DataColumn In excelData.Columns
-									valuez.Add(dr.Item(dc).ToString)
-								Next
-								.CommandText = Trim("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')")
-								.ExecuteNonQuery()
+						Dim insertCount As Integer = 0
+						Dim transacQuery As String = ""
+						For Each dr As DataRow In excelData.Rows
+							insertCount += 1
+							If insertCount = 1 Then transacQuery = "begin;" & vbCrLf
+							Dim valuez As New List(Of String)
+							For Each dc As DataColumn In excelData.Columns
+								valuez.Add(dr.Item(dc).ToString)
 							Next
-							transX.Commit()
-						End Using
+							transacQuery = transacQuery & Trim("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')") & ";" & vbCrLf
+							If insertCount = 999 Then
+								transacQuery = transacQuery & "commit;"
+								.CommandText = transacQuery
+								.ExecuteNonQuery()
+								insertCount = 0
+							End If
+						Next
+						If insertCount < 999 Then
+							transacQuery = transacQuery & "commit;"
+							.CommandText = transacQuery
+							.ExecuteNonQuery()
+						End If
 					End With
 				End Using
 				errx = {}
