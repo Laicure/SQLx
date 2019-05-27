@@ -341,7 +341,6 @@ Public Class MainX
 							If insertCount = 999 Then
 								transacQuery = transacQuery & "commit;"
 								.CommandText = transacQuery
-								Console.WriteLine(transacQuery)
 								.ExecuteNonQuery()
 								insertCount = 0
 							End If
@@ -349,7 +348,6 @@ Public Class MainX
 						If insertCount < 999 Then
 							transacQuery = transacQuery & "commit;"
 							.CommandText = transacQuery
-							Console.WriteLine(transacQuery)
 							.ExecuteNonQuery()
 						End If
 					End With
@@ -460,4 +458,5 @@ Public Class MainX
 			.EndUpdate()
 		End With
 	End Sub
+
 End Class
