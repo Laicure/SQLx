@@ -97,14 +97,14 @@ Public Class MainX
 		ColumnGetDetailMode = CBool(e.Argument)
 		If ColumnGetDetailMode Then
 			Try
-				ColumnList = SQLReadQuery("PRAGMA table_info(" & selectedTable & ")", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("name")).ToArray
+				ColumnList = SQLReadQuery("PRAGMA table_info(" & selectedTable & ")", 60, SQLConn).AsEnumerable().Select(Function(x) "[" & x.Field(Of String)("name") & "]").ToArray
 				errx = {}
 			Catch ex As Exception
 				errx = {Err.Description, Err.Source}
 			End Try
 		Else
 			Try
-				TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master where type='table';", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("tbl_name")).ToArray
+				TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master where type='table';", 60, SQLConn).AsEnumerable().Select(Function(x) "[" & x.Field(Of String)("tbl_name") & "]").ToArray
 				errx = {}
 			Catch ex As Exception
 				errx = {Err.Description, Err.Source}
@@ -285,6 +285,7 @@ Public Class MainX
 		With opDialog
 			.Title = "Select Excel file for import"
 			.Filter = "Excel files|*.xlsx; *.xlsb; *.xlsm; *.xls"
+			.FileName = ""
 			If .ShowDialog = DialogResult.OK Then
 				LbImport.Text = "Importing..."
 				BgImport.RunWorkerAsync(.FileName)
@@ -348,6 +349,7 @@ Public Class MainX
 		With opDialog
 			.Title = "Select SQLite file"
 			.Filter = "SQLite files|*.*"
+			.FileName = ""
 			If .ShowDialog = DialogResult.OK Then
 				SQLiteFile = .FileName
 				TxServerName.Text = SQLiteFile
