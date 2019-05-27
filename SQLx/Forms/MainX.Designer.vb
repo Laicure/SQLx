@@ -24,10 +24,13 @@ Partial Class MainX
 	Private Sub InitializeComponent()
 		Me.panMenu = New System.Windows.Forms.Panel()
 		Me.LbCollapse = New System.Windows.Forms.Label()
+		Me.LBoxColumn = New System.Windows.Forms.ListBox()
+		Me.Label1 = New System.Windows.Forms.Label()
 		Me.LbImport = New System.Windows.Forms.Label()
 		Me.LbSQLiteBrowse = New System.Windows.Forms.Label()
 		Me.LbTableRefresh = New System.Windows.Forms.Label()
 		Me.LbStatus = New System.Windows.Forms.Label()
+		Me.LBoxTable = New System.Windows.Forms.ListBox()
 		Me.LbConnect = New System.Windows.Forms.Label()
 		Me.TxServerName = New System.Windows.Forms.TextBox()
 		Me.Label3 = New System.Windows.Forms.Label()
@@ -50,9 +53,6 @@ Partial Class MainX
 		Me.FdBrowse = New System.Windows.Forms.FolderBrowserDialog()
 		Me.opDialog = New System.Windows.Forms.OpenFileDialog()
 		Me.BgImport = New System.ComponentModel.BackgroundWorker()
-		Me.Label1 = New System.Windows.Forms.Label()
-		Me.LBoxTable = New System.Windows.Forms.ListBox()
-		Me.LBoxColumn = New System.Windows.Forms.ListBox()
 		Me.panMenu.SuspendLayout()
 		Me.SplitCon.Panel1.SuspendLayout()
 		Me.SplitCon.Panel2.SuspendLayout()
@@ -99,6 +99,31 @@ Partial Class MainX
 		Me.LbCollapse.TabIndex = 16
 		Me.LbCollapse.Text = "<"
 		Me.LbCollapse.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		'
+		'LBoxColumn
+		'
+		Me.LBoxColumn.BackColor = System.Drawing.Color.White
+		Me.LBoxColumn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LBoxColumn.ForeColor = System.Drawing.Color.Black
+		Me.LBoxColumn.FormattingEnabled = True
+		Me.LBoxColumn.Location = New System.Drawing.Point(0, 333)
+		Me.LBoxColumn.Margin = New System.Windows.Forms.Padding(0)
+		Me.LBoxColumn.Name = "LBoxColumn"
+		Me.LBoxColumn.Size = New System.Drawing.Size(200, 119)
+		Me.LBoxColumn.TabIndex = 22
+		Me.LBoxColumn.TabStop = False
+		'
+		'Label1
+		'
+		Me.Label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.Label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.Label1.Location = New System.Drawing.Point(0, 312)
+		Me.Label1.Margin = New System.Windows.Forms.Padding(0)
+		Me.Label1.Name = "Label1"
+		Me.Label1.Size = New System.Drawing.Size(200, 22)
+		Me.Label1.TabIndex = 21
+		Me.Label1.Text = "Column List"
+		Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
 		'LbImport
 		'
@@ -160,6 +185,19 @@ Partial Class MainX
 		Me.LbStatus.TabIndex = 15
 		Me.LbStatus.Text = ">> Stand-by <<"
 		Me.LbStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		'
+		'LBoxTable
+		'
+		Me.LBoxTable.BackColor = System.Drawing.Color.White
+		Me.LBoxTable.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LBoxTable.ForeColor = System.Drawing.Color.Black
+		Me.LBoxTable.FormattingEnabled = True
+		Me.LBoxTable.Location = New System.Drawing.Point(0, 194)
+		Me.LBoxTable.Margin = New System.Windows.Forms.Padding(0)
+		Me.LBoxTable.Name = "LBoxTable"
+		Me.LBoxTable.Size = New System.Drawing.Size(200, 119)
+		Me.LBoxTable.TabIndex = 13
+		Me.LBoxTable.TabStop = False
 		'
 		'LbConnect
 		'
@@ -391,44 +429,6 @@ Partial Class MainX
 		'
 		'BgImport
 		'
-		'
-		'Label1
-		'
-		Me.Label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.Label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label1.Location = New System.Drawing.Point(0, 312)
-		Me.Label1.Margin = New System.Windows.Forms.Padding(0)
-		Me.Label1.Name = "Label1"
-		Me.Label1.Size = New System.Drawing.Size(200, 22)
-		Me.Label1.TabIndex = 21
-		Me.Label1.Text = "Column List"
-		Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-		'
-		'LBoxTable
-		'
-		Me.LBoxTable.BackColor = System.Drawing.Color.White
-		Me.LBoxTable.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.LBoxTable.ForeColor = System.Drawing.Color.Black
-		Me.LBoxTable.FormattingEnabled = True
-		Me.LBoxTable.Location = New System.Drawing.Point(0, 194)
-		Me.LBoxTable.Margin = New System.Windows.Forms.Padding(0)
-		Me.LBoxTable.Name = "LBoxTable"
-		Me.LBoxTable.Size = New System.Drawing.Size(200, 119)
-		Me.LBoxTable.TabIndex = 13
-		Me.LBoxTable.TabStop = False
-		'
-		'LBoxColumn
-		'
-		Me.LBoxColumn.BackColor = System.Drawing.Color.White
-		Me.LBoxColumn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.LBoxColumn.ForeColor = System.Drawing.Color.Black
-		Me.LBoxColumn.FormattingEnabled = True
-		Me.LBoxColumn.Location = New System.Drawing.Point(0, 333)
-		Me.LBoxColumn.Margin = New System.Windows.Forms.Padding(0)
-		Me.LBoxColumn.Name = "LBoxColumn"
-		Me.LBoxColumn.Size = New System.Drawing.Size(200, 119)
-		Me.LBoxColumn.TabIndex = 22
-		Me.LBoxColumn.TabStop = False
 		'
 		'MainX
 		'

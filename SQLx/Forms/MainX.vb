@@ -86,6 +86,8 @@ Public Class MainX
 				pendingRefresh = True
 				ClearTableColumn()
 			End If
+
+			TxQuery.Focus()
 		End If
 
 		LbConnect.Text = "Reconnect"
@@ -97,14 +99,14 @@ Public Class MainX
 		ColumnGetDetailMode = CBool(e.Argument)
 		If ColumnGetDetailMode Then
 			Try
-				ColumnList = SQLReadQuery("PRAGMA table_info(" & selectedTable & ")", 60, SQLConn).AsEnumerable().Select(Function(x) "[" & x.Field(Of String)("name") & "]").ToArray
+				ColumnList = SQLReadQuery("PRAGMA table_info(" & selectedTable & ")", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("name")).ToArray
 				errx = {}
 			Catch ex As Exception
 				errx = {Err.Description, Err.Source}
 			End Try
 		Else
 			Try
-				TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master where type='table';", 60, SQLConn).AsEnumerable().Select(Function(x) "[" & x.Field(Of String)("tbl_name") & "]").ToArray
+				TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master where type='table';", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("tbl_name")).ToArray
 				errx = {}
 			Catch ex As Exception
 				errx = {Err.Description, Err.Source}
@@ -139,7 +141,7 @@ Public Class MainX
 				With LBoxColumn
 					.BeginUpdate()
 					.Items.Clear()
-					.Items.AddRange(ColumnList)
+					.Items.AddRange(ColumnList.Select(Function(x) "[" & x & "]").ToArray)
 					.EndUpdate()
 				End With
 			End If
@@ -148,7 +150,7 @@ Public Class MainX
 				With LBoxTable
 					.BeginUpdate()
 					.Items.Clear()
-					.Items.AddRange(TableList)
+					.Items.AddRange(TableList.Select(Function(x) "[" & x & "]").ToArray)
 					.EndUpdate()
 				End With
 			End If
@@ -165,12 +167,27 @@ Public Class MainX
 			Else
 				pendingRefresh = True
 			End If
+
+			With TxQuery
+				TxQuery.Text = .Text.Insert(.SelectionStart, selectedTable)
+				.Focus()
+			End With
 		Else
 			selectedTable = ""
 			With LBoxColumn
 				.BeginUpdate()
 				.Items.Clear()
 				.EndUpdate()
+			End With
+		End If
+	End Sub
+
+	Private Sub LBoxColumn_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LBoxColumn.SelectedIndexChanged
+		If LBoxColumn.SelectedIndex >= 0 Then
+			Dim selectedColumn As String = LBoxColumn.GetItemText(LBoxColumn.SelectedItem)
+			With TxQuery
+				TxQuery.Text = .Text.Insert(.SelectionStart, selectedColumn)
+				.Focus()
 			End With
 		End If
 	End Sub
@@ -287,7 +304,7 @@ Public Class MainX
 			.Filter = "Excel files|*.xlsx; *.xlsb; *.xlsm; *.xls"
 			.FileName = ""
 			If .ShowDialog = DialogResult.OK Then
-				LbImport.Text = "Importing..."
+				LbImport.Text = "Reading..."
 				BgImport.RunWorkerAsync(.FileName)
 			End If
 		End With
@@ -296,6 +313,10 @@ Public Class MainX
 	Private Sub BgImport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BgImport.DoWork
 		Dim excelData As New DataTable
 		excelData = ReadExcel(e.Argument.ToString, ColumnList).Copy
+		LbImport.Invoke(DirectCast(
+						Sub()
+							LbImport.Text = "Importing..."
+						End Sub, MethodInvoker))
 		If excelData.Rows.Count > 0 Then
 			If WithTruncate Then
 				SQLWriteQuery("delete from " & selectedTable, 60, SQLConn)
@@ -307,17 +328,30 @@ Public Class MainX
 					With comX
 						.Connection = conX
 						.CommandTimeout = 500
-						Using transX As SQLite.SQLiteTransaction = conX.BeginTransaction
-							For Each dr As DataRow In excelData.Rows
-								Dim valuez As New List(Of String)
-								For Each dc As DataColumn In excelData.Columns
-									valuez.Add(dr.Item(dc).ToString)
-								Next
-								.CommandText = Trim("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')")
-								.ExecuteNonQuery()
+						Dim insertCount As Integer = 0
+						Dim transacQuery As String = ""
+						For Each dr As DataRow In excelData.Rows
+							insertCount += 1
+							If insertCount = 1 Then transacQuery = "begin;" & vbCrLf
+							Dim valuez As New List(Of String)
+							For Each dc As DataColumn In excelData.Columns
+								valuez.Add(dr.Item(dc).ToString)
 							Next
-							transX.Commit()
-						End Using
+							transacQuery = transacQuery & Trim("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')") & ";" & vbCrLf
+							If insertCount = 999 Then
+								transacQuery = transacQuery & "commit;"
+								.CommandText = transacQuery
+								Console.WriteLine(transacQuery)
+								.ExecuteNonQuery()
+								insertCount = 0
+							End If
+						Next
+						If insertCount < 999 Then
+							transacQuery = transacQuery & "commit;"
+							.CommandText = transacQuery
+							Console.WriteLine(transacQuery)
+							.ExecuteNonQuery()
+						End If
 					End With
 				End Using
 				errx = {}
@@ -346,6 +380,7 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbSQLiteBrowse_Click(sender As Object, e As EventArgs) Handles LbSQLiteBrowse.Click
+		If BgImport.IsBusy Or BgTryConnect.IsBusy Or BgExecute.IsBusy Or BGgetDetails.IsBusy Then Exit Sub
 		With opDialog
 			.Title = "Select SQLite file"
 			.Filter = "SQLite files|*.*"
@@ -425,5 +460,4 @@ Public Class MainX
 			.EndUpdate()
 		End With
 	End Sub
-
 End Class
