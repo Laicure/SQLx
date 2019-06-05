@@ -170,7 +170,6 @@ Public Class MainX
 
 			With TxQuery
 				TxQuery.Text = .Text.Insert(.SelectionStart, selectedTable)
-				.Focus()
 			End With
 		Else
 			selectedTable = ""
@@ -187,7 +186,6 @@ Public Class MainX
 			Dim selectedColumn As String = LBoxColumn.GetItemText(LBoxColumn.SelectedItem)
 			With TxQuery
 				TxQuery.Text = .Text.Insert(.SelectionStart, selectedColumn)
-				.Focus()
 			End With
 		End If
 	End Sub
