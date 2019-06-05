@@ -397,9 +397,7 @@ Public Class MainX
 			MessageBox.Show("No data imported." & vbCrLf & vbCrLf & "Column List:" & vbCrLf & "[" & String.Join("], [", ColumnList) & "]", "No Data!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 			LbImport.Text = "Import"
 			Exit Sub
-		End If
-
-		If errx.Count = 2 Then
+		ElseIf errx.Count = 2 Then
 			MessageBox.Show(errx(0), errx(1), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 		Else
 			MessageBox.Show("Data uploaded!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information)

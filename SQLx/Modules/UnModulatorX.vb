@@ -110,6 +110,9 @@ Module UnModulatorX
 					colMismatch = True
 					Exit For
 				End If
+			Else
+				colMismatch = True
+				Exit For
 			End If
 		Next
 		If Not colMismatch Then
