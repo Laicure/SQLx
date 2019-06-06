@@ -222,7 +222,6 @@ Public Class MainX
 
 			With TxQuery
 				TxQuery.Text = .Text.Insert(.SelectionStart, selectedTable)
-				.Focus()
 			End With
 		Else
 			selectedTable = ""
