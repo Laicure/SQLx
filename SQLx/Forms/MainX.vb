@@ -15,7 +15,7 @@ Public Class MainX
 
 	Private Sub MainX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 		Me.Icon = My.Resources.art
-		Me.Text = "SQLx [Build Date: " & My.Computer.FileSystem.GetFileInfo(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName).LastWriteTimeUtc.ToString("yyyy-MM-dd HH:mm:ss") & " UTC]"
+		Me.Text = "SQLx [Build Date: " & My.Computer.FileSystem.GetFileInfo(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName).LastWriteTimeUtc.ToString("yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture) & " UTC]"
 
 		ApplyDataGridViewProperties(DgData)
 		DgData.DataSource = ExecuteBSData
@@ -106,7 +106,7 @@ Public Class MainX
 			End Try
 		Else
 			Try
-				TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master where type='table';", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("tbl_name")).ToArray
+				TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("tbl_name")).ToArray
 				errx = {}
 			Catch ex As Exception
 				errx = {Err.Description, Err.Source}
@@ -261,7 +261,7 @@ Public Class MainX
 		With FdBrowse
 			.Description = "Select a folder for Export"
 			If .ShowDialog = DialogResult.OK Then
-				Dim path As String = .SelectedPath & "\" & Now.ToString("yyyy.MM.dd_HH.mm.ss.fff")
+				Dim path As String = .SelectedPath & "\" & Now.ToString("yyyy.MM.dd_HH.mm.ss.fff", Globalization.CultureInfo.InvariantCulture)
 				LbExport.Text = "Exporting..."
 				BgExport.RunWorkerAsync(path)
 			End If
@@ -299,7 +299,7 @@ Public Class MainX
 
 		With opDialog
 			.Title = "Select Excel file for import"
-			.Filter = "Excel files|*.xlsx; *.xlsb; *.xlsm; *.xls"
+			.Filter = "Excel files|*.xlsx; *.xlsb; *.xlsm; *.xls; *.csv"
 			.FileName = ""
 			If .ShowDialog = DialogResult.OK Then
 				LbImport.Text = "Reading..."
@@ -393,7 +393,7 @@ Public Class MainX
 		With FdBrowse
 			.Description = "Select a folder to create the database"
 			If .ShowDialog = DialogResult.OK Then
-				SQLiteFile = .SelectedPath & "\" & Now.ToString("yyyy.MM.dd_HH.mm.ss.fff") & ".SQLite"
+				SQLiteFile = .SelectedPath & "\" & Now.ToString("yyyy.MM.dd_HH.mm.ss.fff", Globalization.CultureInfo.InvariantCulture) & ".SQLite"
 				LbCreateConnect.Text = "Creating..."
 				Try
 					SQLite.SQLiteConnection.CreateFile(SQLiteFile)
