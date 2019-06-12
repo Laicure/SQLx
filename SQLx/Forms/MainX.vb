@@ -38,7 +38,7 @@ Public Class MainX
 
 	Private Sub LbConnect_Click(sender As Object, e As EventArgs) Handles LbConnect.Click
 		If BgImport.IsBusy Or BgTryConnect.IsBusy Or BgExecute.IsBusy Or BGgetDetails.IsBusy Then Exit Sub
-		If String.IsNullOrEmpty(TxServerName.Text.Trim) Then
+		If String.IsNullOrEmpty(TxServerName.Text) Then
 			LbSQLiteBrowse_Click(sender, Nothing)
 			Exit Sub
 		End If
@@ -215,7 +215,7 @@ Public Class MainX
 	End Sub
 
 	Private Sub LbExecute_Click(sender As Object, e As EventArgs) Handles LbExecute.Click
-		If String.IsNullOrEmpty(TxQuery.Text.Trim) Or BgExecute.IsBusy Or BgTryConnect.IsBusy Or Not Connected Then Exit Sub
+		If String.IsNullOrEmpty(TxQuery.Text) Or BgExecute.IsBusy Or BgTryConnect.IsBusy Or Not Connected Then Exit Sub
 		If FileMissing(SQLiteFile) Then Exit Sub
 
 		LbExecute.Text = "Executing..."
@@ -246,6 +246,7 @@ Public Class MainX
 		If errx.Count = 2 Then
 			MessageBox.Show(errx(0), errx(1), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 		Else
+			DgData.Columns.Clear()
 			ExecuteBSData.DataSource = ExecuteData
 			ExecuteBSData.EndEdit()
 		End If
