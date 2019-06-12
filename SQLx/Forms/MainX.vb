@@ -15,7 +15,7 @@ Public Class MainX
 
 	Private Sub MainX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 		Me.Icon = My.Resources.art
-		Me.Text = "SQLx [Build Date: " & My.Computer.FileSystem.GetFileInfo(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName).LastWriteTimeUtc.ToString("yyyy-MM-dd HH:mm:ss") & " UTC]"
+		Me.Text = "SQLx [Build Date: " & My.Computer.FileSystem.GetFileInfo(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName).LastWriteTimeUtc.ToString("yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture) & " UTC]"
 
 		ApplyDataGridViewProperties(DgData)
 		DgData.DataSource = ExecuteBSData
@@ -286,6 +286,7 @@ Public Class MainX
 		If errx.Count = 2 Then
 			MessageBox.Show(errx(0), errx(1), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 		Else
+			DgData.Columns.Clear()
 			ExecuteBSData.DataSource = ExecuteData
 			ExecuteBSData.EndEdit()
 		End If
@@ -299,7 +300,7 @@ Public Class MainX
 	Private Sub LbExport_Click(sender As Object, e As EventArgs) Handles LbExport.Click
 		If ExecuteData.Rows.Count = 0 Or BgExport.IsBusy Or BgExecute.IsBusy Then Exit Sub
 		If FdBrowse.ShowDialog = DialogResult.OK Then
-			Dim path As String = FdBrowse.SelectedPath & "\" & Now.ToString("yyyy.MM.dd_HH.mm.ss.fff")
+			Dim path As String = FdBrowse.SelectedPath & "\" & Now.ToString("yyyy.MM.dd_HH.mm.ss.fff", Globalization.CultureInfo.InvariantCulture)
 			LbExport.Text = "Exporting..."
 			BgExport.RunWorkerAsync(path)
 		End If
