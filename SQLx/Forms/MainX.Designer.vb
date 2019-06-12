@@ -517,7 +517,7 @@ Partial Class MainX
 		'
 		'opDialog
 		'
-		Me.opDialog.Filter = "Excel files|*.xlsx; *.xlsb; *.xlsm; *.xls"
+		Me.opDialog.Filter = "Excel files|*.xlsx; *.xlsb; *.xlsm; *.xls; *.csv"
 		'
 		'BgImport
 		'
