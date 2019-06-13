@@ -356,7 +356,7 @@ Public Class MainX
 					If Not String.IsNullOrEmpty(selectedDatabase.Trim) Then conX.ChangeDatabase(selectedDatabase.Trim)
 					With comX
 						.Connection = conX
-						.CommandTimeout = 500
+						.CommandTimeout = 0
 						Dim insertCount As Integer = 0
 						Dim transacQuery As String = ""
 						For Each dr As DataRow In excelData.Rows
