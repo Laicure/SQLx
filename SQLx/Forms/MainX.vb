@@ -323,7 +323,7 @@ Public Class MainX
 					If conX.State = ConnectionState.Closed Then conX.Open()
 					With comX
 						.Connection = conX
-						.CommandTimeout = 500
+						.CommandTimeout = 0
 						Dim insertCount As Integer = 0
 						Dim transacQuery As String = ""
 						For Each dr As DataRow In excelData.Rows
@@ -334,14 +334,14 @@ Public Class MainX
 								valuez.Add(dr.Item(dc).ToString)
 							Next
 							transacQuery = transacQuery & Trim("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')") & ";" & vbCrLf
-							If insertCount = 777 Then
+							If insertCount = 999 Then
 								transacQuery = transacQuery & "commit;"
 								.CommandText = transacQuery
 								.ExecuteNonQuery()
 								insertCount = 0
 							End If
 						Next
-						If insertCount < 777 Then
+						If insertCount < 999 Then
 							transacQuery = transacQuery & "commit;"
 							.CommandText = transacQuery
 							.ExecuteNonQuery()
