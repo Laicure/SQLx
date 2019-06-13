@@ -367,14 +367,14 @@ Public Class MainX
 								valuez.Add(dr.Item(dc).ToString)
 							Next
 							transacQuery = transacQuery & Trim("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')") & ";" & vbCrLf
-							If insertCount = 777 Then
+							If insertCount = 999 Then
 								transacQuery = transacQuery & "commit;"
 								.CommandText = transacQuery
 								.ExecuteNonQuery()
 								insertCount = 0
 							End If
 						Next
-						If insertCount < 777 Then
+						If insertCount < 999 Then
 							transacQuery = transacQuery & "commit;"
 							.CommandText = transacQuery
 							.ExecuteNonQuery()
