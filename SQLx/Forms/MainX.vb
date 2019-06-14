@@ -299,7 +299,7 @@ Public Class MainX
 		End If
 
 		With opDialog
-			.Title = "Select Excel file for import"
+			.Title = "Select Excel file for " & selectedTable
 			.Filter = "Excel files|*.xlsx; *.xlsb; *.xlsm; *.xls; *.csv"
 			.FileName = ""
 			If .ShowDialog = DialogResult.OK Then
@@ -312,7 +312,8 @@ Public Class MainX
 	Private Sub BgImport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BgImport.DoWork
 		Dim excelData As New DataTable
 		Dim selectedTabled As String = selectedTable
-		excelData = ReadExcel(e.Argument.ToString, ColumnList).Copy
+		Dim ColumnListed() As String = ColumnList
+		excelData = ReadExcel(e.Argument.ToString, ColumnListed).Copy
 		If excelData.Rows.Count > 0 Then
 			LbImport.Invoke(DirectCast(Sub() LbImport.Text = "Importing...", MethodInvoker))
 			If WithTruncate Then
@@ -334,7 +335,7 @@ Public Class MainX
 							For Each dc As DataColumn In excelData.Columns
 								valuez.Add(dr.Item(dc).ToString)
 							Next
-							transacQuery = transacQuery & Trim("insert into " & selectedTabled & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')") & ";" & vbCrLf
+							transacQuery = transacQuery & Trim("insert into " & selectedTabled & " ([" & String.Join("], [", ColumnListed) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')") & ";" & vbCrLf
 							If insertCount = 999 Then
 								transacQuery = transacQuery & "commit;"
 								.CommandText = transacQuery
