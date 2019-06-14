@@ -311,11 +311,12 @@ Public Class MainX
 
 	Private Sub BgImport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BgImport.DoWork
 		Dim excelData As New DataTable
+		Dim selectedTabled As String = selectedTable
 		excelData = ReadExcel(e.Argument.ToString, ColumnList).Copy
 		If excelData.Rows.Count > 0 Then
 			LbImport.Invoke(DirectCast(Sub() LbImport.Text = "Importing...", MethodInvoker))
 			If WithTruncate Then
-				SQLWriteQuery("delete from " & selectedTable, 60, SQLConn)
+				SQLWriteQuery("delete from " & selectedTabled, 60, SQLConn)
 				SQLWriteQuery("vacuum", 60, SQLConn)
 			End If
 			Try
@@ -333,7 +334,7 @@ Public Class MainX
 							For Each dc As DataColumn In excelData.Columns
 								valuez.Add(dr.Item(dc).ToString)
 							Next
-							transacQuery = transacQuery & Trim("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')") & ";" & vbCrLf
+							transacQuery = transacQuery & Trim("insert into " & selectedTabled & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')") & ";" & vbCrLf
 							If insertCount = 999 Then
 								transacQuery = transacQuery & "commit;"
 								.CommandText = transacQuery
