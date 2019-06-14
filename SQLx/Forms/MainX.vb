@@ -340,7 +340,8 @@ Public Class MainX
 	End Sub
 
 	Private Sub BgImport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BgImport.DoWork
-		ColumnList = SQLReadQuery("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS with (NoLock) where COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity')=0 and Table_Catalog='" & selectedDatabase & "' and Table_Name='" & selectedTable & "' order by ORDINAL_POSITION", 60, SQLConn, selectedDatabase).AsEnumerable().Select(Function(x) x.Field(Of String)("COLUMN_NAME")).Distinct.ToArray
+		Dim selectedTabled As String = selectedTable
+		ColumnList = SQLReadQuery("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS with (NoLock) where COLUMNPROPERTY(object_id(TABLE_SCHEMA+'.'+TABLE_NAME), COLUMN_NAME, 'IsIdentity')=0 and Table_Catalog='" & selectedDatabase & "' and Table_Name='" & selectedTabled & "' order by ORDINAL_POSITION", 60, SQLConn, selectedDatabase).AsEnumerable().Select(Function(x) x.Field(Of String)("COLUMN_NAME")).Distinct.ToArray
 
 		Dim excelData As New DataTable
 		excelData = ReadExcel(e.Argument.ToString, ColumnList).Copy
@@ -349,7 +350,7 @@ Public Class MainX
 			LbImport.Invoke(DirectCast(Sub() LbImport.Text = "Importing...", MethodInvoker))
 			Try
 				If WithTruncate Then
-					SQLWriteQuery("delete from " & selectedTable, 60, SQLConn)
+					SQLWriteQuery("delete from " & selectedTabled, 60, SQLConn)
 				End If
 				Using conX As New SqlClient.SqlConnection(SQLConn), comX As New SqlClient.SqlCommand
 					If conX.State = ConnectionState.Closed Then conX.Open()
@@ -366,7 +367,7 @@ Public Class MainX
 							For Each dc As DataColumn In excelData.Columns
 								valuez.Add(dr.Item(dc).ToString)
 							Next
-							transacQuery = transacQuery & Trim("insert into " & selectedTable & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')") & ";" & vbCrLf
+							transacQuery = transacQuery & Trim("insert into " & selectedTabled & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')") & ";" & vbCrLf
 							If insertCount = 999 Then
 								transacQuery = transacQuery & "commit;"
 								.CommandText = transacQuery
