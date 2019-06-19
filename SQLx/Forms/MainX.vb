@@ -106,7 +106,7 @@ Public Class MainX
 			End Try
 		Else
 			Try
-				TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("tbl_name")).ToArray
+				TableList = SQLReadQuery("SELECT tbl_name FROM sqlite_master where type in ('view', 'table')", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("tbl_name")).ToArray
 				errx = {}
 			Catch ex As Exception
 				errx = {Err.Description, Err.Source}
