@@ -272,7 +272,7 @@ Public Class MainX
 	Private Sub BgExport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BgExport.DoWork
 		Dim path As String = e.Argument.ToString
 		Exporter(path, ExecuteData)
-		Process.Start("explorer", "/select, " & path & ".xlsx")
+		Process.Start("explorer", "/select, " & path & ".xlsb")
 	End Sub
 
 	Private Sub BgExport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BgExport.RunWorkerCompleted
