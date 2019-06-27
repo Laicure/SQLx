@@ -3,15 +3,15 @@
 Module UnModulatorX
 
 	Friend Sub Exporter(ByRef ExportPathName As String, ByRef dtxx As Data.DataTable)
-		Dim excel As New Object
+		Dim excel As Object = CreateObject("Excel.Application")
 		Dim wBook As Object
 		Dim wSheet As Object
 
-		excel = CreateObject("Excel.Application")
-
-		excel.EnableEvents = False
-		excel.ScreenUpdating = False
-		excel.DisplayAlerts = False
+		With excel
+			.EnableEvents = False
+			.ScreenUpdating = False
+			.DisplayAlerts = False
+		End With
 
 		wBook = excel.Workbooks.Add
 		wSheet = wBook.ActiveSheet
@@ -20,8 +20,8 @@ Module UnModulatorX
 		Dim colIndex As Integer = 0
 
 		For Each dc As Data.DataColumn In dtxx.Columns
-			colIndex = colIndex + 1
-			excel.Cells(1, colIndex) = dc.ColumnName
+			colIndex += 1
+			wSheet.Cells(1, colIndex) = dc.ColumnName
 		Next
 
 		Dim arrX(dtxx.Rows.Count, dtxx.Columns.Count) As Object
@@ -42,7 +42,7 @@ Module UnModulatorX
 					'	End If
 					'End If
 				Else
-					arrX(r, c) = "-"
+					arrX(r, c) = ""
 				End If
 			Next
 		Next
@@ -53,14 +53,13 @@ Module UnModulatorX
 		Dim Rr As Object = wSheet.Range(c1, c2)
 
 		Rr.value2 = arrX
+		With excel
+			.EnableEvents = True
+			.ScreenUpdating = True
+			.DisplayAlerts = True
+		End With
 
-		excel.EnableEvents = True
-		excel.ScreenUpdating = True
-		excel.DisplayAlerts = True
-
-		wSheet.Columns.AutoFit()
-
-		wBook.SaveAs(ExportPathName & ".xlsx")
+		wBook.SaveAs(ExportPathName & ".xlsb", 50)
 
 		wBook.Close(False, Nothing, Nothing)
 		excel.Quit()
