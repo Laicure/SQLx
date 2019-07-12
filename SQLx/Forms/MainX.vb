@@ -210,7 +210,11 @@ Public Class MainX
 	Private Sub LBoxDatabase_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LBoxDatabase.SelectedIndexChanged
 		If LBoxDatabase.SelectedIndex >= 0 Then
 			selectedDatabase = LBoxDatabase.GetItemText(LBoxDatabase.SelectedItem)
-			If Not BGgetDetails.IsBusy Then BGgetDetails.RunWorkerAsync(selectedDatabase)
+			If Not BGgetDetails.IsBusy Then
+				BGgetDetails.RunWorkerAsync(True)
+			Else
+				pendingRefresh = True
+			End If
 		Else
 			selectedDatabase = ""
 		End If
