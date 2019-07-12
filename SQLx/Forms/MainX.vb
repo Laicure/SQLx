@@ -15,7 +15,7 @@ Public Class MainX
 
 	Private Sub MainX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 		Me.Icon = My.Resources.art
-		Me.Text = "SQLx [Build Date: " & My.Computer.FileSystem.GetFileInfo(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName).LastWriteTimeUtc.ToString("yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture) & " UTC]"
+		Me.Text = "SQLx - SQLite v" & My.Application.Info.Version.ToString
 
 		ApplyDataGridViewProperties(DgData)
 		DgData.DataSource = ExecuteBSData
