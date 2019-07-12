@@ -211,7 +211,7 @@ Public Class MainX
 		If LBoxDatabase.SelectedIndex >= 0 Then
 			selectedDatabase = LBoxDatabase.GetItemText(LBoxDatabase.SelectedItem)
 			If Not BGgetDetails.IsBusy Then
-				BGgetDetails.RunWorkerAsync(True)
+				BGgetDetails.RunWorkerAsync(selectedDatabase)
 			Else
 				pendingRefresh = True
 			End If
