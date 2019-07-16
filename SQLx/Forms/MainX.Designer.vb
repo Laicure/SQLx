@@ -36,13 +36,14 @@ Partial Class MainX
 		Me.Label3 = New System.Windows.Forms.Label()
 		Me.LbCreateConnect = New System.Windows.Forms.Label()
 		Me.Label7 = New System.Windows.Forms.Label()
+		Me.LBoxQueries = New System.Windows.Forms.ListBox()
 		Me.BgTryConnect = New System.ComponentModel.BackgroundWorker()
 		Me.BGgetDetails = New System.ComponentModel.BackgroundWorker()
 		Me.SplitCon = New System.Windows.Forms.SplitContainer()
-		Me.TxQuery = New System.Windows.Forms.TextBox()
 		Me.Panel1 = New System.Windows.Forms.Panel()
 		Me.Label9 = New System.Windows.Forms.Label()
 		Me.LbExecute = New System.Windows.Forms.Label()
+		Me.TxQuery = New System.Windows.Forms.TextBox()
 		Me.DgData = New System.Windows.Forms.DataGridView()
 		Me.Panel2 = New System.Windows.Forms.Panel()
 		Me.LbDataCount = New System.Windows.Forms.Label()
@@ -53,7 +54,6 @@ Partial Class MainX
 		Me.FdBrowse = New System.Windows.Forms.FolderBrowserDialog()
 		Me.opDialog = New System.Windows.Forms.OpenFileDialog()
 		Me.BgImport = New System.ComponentModel.BackgroundWorker()
-		Me.LBoxQueries = New System.Windows.Forms.ListBox()
 		Me.panMenu.SuspendLayout()
 		Me.SplitCon.Panel1.SuspendLayout()
 		Me.SplitCon.Panel2.SuspendLayout()
@@ -269,6 +269,21 @@ Partial Class MainX
 		Me.Label7.Text = "Tables"
 		Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		'
+		'LBoxQueries
+		'
+		Me.LBoxQueries.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+			Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+		Me.LBoxQueries.BackColor = System.Drawing.Color.White
+		Me.LBoxQueries.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LBoxQueries.ForeColor = System.Drawing.Color.Black
+		Me.LBoxQueries.FormattingEnabled = True
+		Me.LBoxQueries.Location = New System.Drawing.Point(0, 85)
+		Me.LBoxQueries.Margin = New System.Windows.Forms.Padding(0)
+		Me.LBoxQueries.Name = "LBoxQueries"
+		Me.LBoxQueries.Size = New System.Drawing.Size(200, 93)
+		Me.LBoxQueries.TabIndex = 14
+		Me.LBoxQueries.TabStop = False
+		'
 		'BgTryConnect
 		'
 		'
@@ -300,24 +315,6 @@ Partial Class MainX
 		Me.SplitCon.TabIndex = 15
 		Me.SplitCon.TabStop = False
 		'
-		'TxQuery
-		'
-		Me.TxQuery.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-			Or System.Windows.Forms.AnchorStyles.Left) _
-			Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-		Me.TxQuery.BackColor = System.Drawing.Color.White
-		Me.TxQuery.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.TxQuery.ForeColor = System.Drawing.Color.Black
-		Me.TxQuery.Location = New System.Drawing.Point(-1, 21)
-		Me.TxQuery.Margin = New System.Windows.Forms.Padding(0)
-		Me.TxQuery.MaxLength = 2147483647
-		Me.TxQuery.Multiline = True
-		Me.TxQuery.Name = "TxQuery"
-		Me.TxQuery.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-		Me.TxQuery.Size = New System.Drawing.Size(583, 158)
-		Me.TxQuery.TabIndex = 7
-		Me.TxQuery.WordWrap = False
-		'
 		'Panel1
 		'
 		Me.Panel1.Controls.Add(Me.Label9)
@@ -338,7 +335,7 @@ Partial Class MainX
 		Me.Label9.Location = New System.Drawing.Point(-1, 0)
 		Me.Label9.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label9.Name = "Label9"
-		Me.Label9.Size = New System.Drawing.Size(459, 22)
+		Me.Label9.Size = New System.Drawing.Size(509, 22)
 		Me.Label9.TabIndex = 6
 		Me.Label9.Text = "Query ⤵"
 		Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -351,13 +348,31 @@ Partial Class MainX
 		Me.LbExecute.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbExecute.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.LbExecute.ForeColor = System.Drawing.Color.Blue
-		Me.LbExecute.Location = New System.Drawing.Point(457, 0)
+		Me.LbExecute.Location = New System.Drawing.Point(507, 0)
 		Me.LbExecute.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbExecute.Name = "LbExecute"
-		Me.LbExecute.Size = New System.Drawing.Size(125, 22)
+		Me.LbExecute.Size = New System.Drawing.Size(75, 22)
 		Me.LbExecute.TabIndex = 9
 		Me.LbExecute.Text = "Execute"
 		Me.LbExecute.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		'
+		'TxQuery
+		'
+		Me.TxQuery.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+			Or System.Windows.Forms.AnchorStyles.Left) _
+			Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+		Me.TxQuery.BackColor = System.Drawing.Color.White
+		Me.TxQuery.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.TxQuery.ForeColor = System.Drawing.Color.Black
+		Me.TxQuery.Location = New System.Drawing.Point(-1, 21)
+		Me.TxQuery.Margin = New System.Windows.Forms.Padding(0)
+		Me.TxQuery.MaxLength = 2147483647
+		Me.TxQuery.Multiline = True
+		Me.TxQuery.Name = "TxQuery"
+		Me.TxQuery.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+		Me.TxQuery.Size = New System.Drawing.Size(583, 158)
+		Me.TxQuery.TabIndex = 7
+		Me.TxQuery.WordWrap = False
 		'
 		'DgData
 		'
@@ -405,10 +420,10 @@ Partial Class MainX
 		Me.LbExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbExport.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.LbExport.ForeColor = System.Drawing.Color.Blue
-		Me.LbExport.Location = New System.Drawing.Point(457, 0)
+		Me.LbExport.Location = New System.Drawing.Point(507, 0)
 		Me.LbExport.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbExport.Name = "LbExport"
-		Me.LbExport.Size = New System.Drawing.Size(125, 22)
+		Me.LbExport.Size = New System.Drawing.Size(75, 22)
 		Me.LbExport.TabIndex = 12
 		Me.LbExport.Text = "Export"
 		Me.LbExport.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -422,7 +437,7 @@ Partial Class MainX
 		Me.Label10.Location = New System.Drawing.Point(98, 0)
 		Me.Label10.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label10.Name = "Label10"
-		Me.Label10.Size = New System.Drawing.Size(360, 22)
+		Me.Label10.Size = New System.Drawing.Size(410, 22)
 		Me.Label10.TabIndex = 8
 		Me.Label10.Text = "Data ⤵"
 		Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -435,21 +450,6 @@ Partial Class MainX
 		'
 		'BgImport
 		'
-		'
-		'LBoxQueries
-		'
-		Me.LBoxQueries.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-			Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-		Me.LBoxQueries.BackColor = System.Drawing.Color.White
-		Me.LBoxQueries.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.LBoxQueries.ForeColor = System.Drawing.Color.Black
-		Me.LBoxQueries.FormattingEnabled = True
-		Me.LBoxQueries.Location = New System.Drawing.Point(0, 85)
-		Me.LBoxQueries.Margin = New System.Windows.Forms.Padding(0)
-		Me.LBoxQueries.Name = "LBoxQueries"
-		Me.LBoxQueries.Size = New System.Drawing.Size(200, 93)
-		Me.LBoxQueries.TabIndex = 14
-		Me.LBoxQueries.TabStop = False
 		'
 		'MainX
 		'
