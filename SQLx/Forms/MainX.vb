@@ -4,7 +4,7 @@ Public Class MainX
 	Dim errx() As String = {}
 	Friend selectedTable As String = ""
 	Dim ExecuteData As New DataTable
-	Dim ExecuteBSData As New BindingSource
+	Private ReadOnly ExecuteBSData As New BindingSource
 	Dim TableList() As String = {}
 	Dim ColumnList() As String = {}
 	Dim ColumnGetDetailMode As Boolean = False 'true if column, false if table
@@ -12,6 +12,8 @@ Public Class MainX
 	Dim pendingRefresh As Boolean = False
 	Dim Connected As Boolean = False
 	Dim SQLiteFile As String = ""
+
+	Private ReadOnly QuerySessionCache As New HashSet(Of QuerySessionCache)
 
 	Private Sub MainX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 		Me.Icon = My.Resources.art
@@ -50,7 +52,7 @@ Public Class MainX
 		BgTryConnect.RunWorkerAsync(SQLConn)
 	End Sub
 
-	Private Sub bgTryConnect_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BgTryConnect.DoWork
+	Private Sub BgTryConnect_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BgTryConnect.DoWork
 		Threading.Thread.Sleep(222)
 		Try
 			Using tryCon As New SQLite.SQLiteConnection(e.Argument.ToString)
@@ -63,7 +65,7 @@ Public Class MainX
 		End Try
 	End Sub
 
-	Private Sub bgTryConnect_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BgTryConnect.RunWorkerCompleted
+	Private Sub BgTryConnect_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BgTryConnect.RunWorkerCompleted
 		If errx.Count = 2 Then
 			With LbStatus
 				.Text = ">> Disconnected <<"
@@ -195,7 +197,7 @@ Public Class MainX
 
 		If panMenu.Width = 200 Then
 			If LbStatus.ForeColor = Color.Red Then Exit Sub
-			panMenu.Width = 22
+			panMenu.Width = 23
 			With LbCollapse
 				.Text = ">"
 				.Height = 452
@@ -207,9 +209,9 @@ Public Class MainX
 			panMenu.Width = 200
 			With LbCollapse
 				.Text = "<"
-				.Height = 22
-				.Top = 131
-				.Left = 178
+				.Height = 23
+				.Top = 63
+				.Left = 177
 			End With
 		End If
 	End Sub
@@ -255,6 +257,18 @@ Public Class MainX
 		LbExecute.Text = "Execute"
 		LbExecute.Enabled = True
 		TxQuery.ReadOnly = False
+
+		If Not QuerySessionCache.Where(Function(x) x.Query = TxQuery.Text.Trim).Count >= 1 Then
+			QuerySessionCache.Add(New QuerySessionCache With {.ExecDate = Now.ToString("yyyy-MM-dd hh:mm:ss tt", Globalization.CultureInfo.InvariantCulture), .Query = TxQuery.Text.Trim})
+			If QuerySessionCache.Count > 0 Then
+				With LBoxQueries
+					.BeginUpdate()
+					.Items.Clear()
+					.Items.AddRange(QuerySessionCache.Select(Function(x) x.ExecDate).OrderByDescending(Function(y) CDate(y)).ToArray)
+					.EndUpdate()
+				End With
+			End If
+		End If
 	End Sub
 
 	Private Sub LbExport_Click(sender As Object, e As EventArgs) Handles LbExport.Click
@@ -427,6 +441,14 @@ Public Class MainX
 		End If
 	End Sub
 
+	Private Sub LBoxQueries_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LBoxQueries.SelectedIndexChanged
+		With LBoxQueries
+			If .SelectedIndex >= 0 Then
+				TxQuery.Text = QuerySessionCache.Where(Function(x) x.ExecDate = .GetItemText(.SelectedItem)).Select(Function(x) x.Query).FirstOrDefault
+			End If
+		End With
+	End Sub
+
 	Private Function FileMissing(ByVal filePath As String) As Boolean
 		If Not My.Computer.FileSystem.FileExists(filePath) Then
 			With LbStatus
@@ -454,5 +476,9 @@ Public Class MainX
 			.EndUpdate()
 		End With
 	End Sub
+End Class
 
+Friend Class QuerySessionCache
+	Friend Property ExecDate As String
+	Friend Property Query As String
 End Class
