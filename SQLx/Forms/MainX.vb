@@ -5,13 +5,15 @@ Public Class MainX
 	Friend selectedDatabase As String = ""
 	Friend selectedTable As String = ""
 	Dim ExecuteData As New DataTable
-	Dim ExecuteBSData As New BindingSource
+	Private ReadOnly ExecuteBSData As New BindingSource
 	Dim DatabaseList() As String = {}
 	Dim TableList() As String = {}
 	Dim ColumnList() As String = {}
 	Dim WithTruncate As Boolean = False
 	Dim pendingRefresh As Boolean = False
 	Dim Connected As Boolean = False
+
+	Private ReadOnly QuerySessionCache As New HashSet(Of QuerySessionCache)
 
 	Private Sub MainX_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 		Me.Icon = My.Resources.art
@@ -237,7 +239,7 @@ Public Class MainX
 
 		If panMenu.Width = 200 Then
 			If LbStatus.ForeColor = Color.Red Then Exit Sub
-			panMenu.Width = 22
+			panMenu.Width = 26
 			With LbCollapse
 				.Text = ">"
 				.Height = 452
@@ -249,9 +251,9 @@ Public Class MainX
 			panMenu.Width = 200
 			With LbCollapse
 				.Text = "<"
-				.Height = 22
+				.Height = 26
 				.Top = 126
-				.Left = 178
+				.Left = 174
 			End With
 		End If
 	End Sub
@@ -283,6 +285,18 @@ Public Class MainX
 		If errx.Count <> 2 Then
 			ExecuteData = New DataTable
 			ExecuteData = getdata.Copy
+		End If
+
+		If Not QuerySessionCache.Where(Function(x) x.Query = TxQuery.Text.Trim).Count >= 1 Then
+			QuerySessionCache.Add(New QuerySessionCache With {.ExecDate = Now.ToString("yyyy-MM-dd hh:mm:ss tt", Globalization.CultureInfo.InvariantCulture), .Query = TxQuery.Text.Trim})
+			If QuerySessionCache.Count > 0 Then
+				With LBoxQueries
+					.BeginUpdate()
+					.Items.Clear()
+					.Items.AddRange(QuerySessionCache.Select(Function(x) x.ExecDate).OrderByDescending(Function(y) CDate(y)).ToArray)
+					.EndUpdate()
+				End With
+			End If
 		End If
 	End Sub
 
@@ -373,14 +387,14 @@ Public Class MainX
 							Next
 							transacQuery = transacQuery & Trim("insert into " & selectedTabled & " ([" & String.Join("], [", ColumnList) & "]) values ('" & String.Join("', '", valuez.ToArray) & "')") & ";" & vbCrLf
 							If insertCount = 999 Then
-								transacQuery = transacQuery & "commit;"
+								transacQuery &= "commit;"
 								.CommandText = transacQuery
 								.ExecuteNonQuery()
 								insertCount = 0
 							End If
 						Next
 						If insertCount < 999 Then
-							transacQuery = transacQuery & "commit;"
+							transacQuery &= "commit;"
 							.CommandText = transacQuery
 							.ExecuteNonQuery()
 						End If
@@ -430,4 +444,16 @@ Public Class MainX
 		End If
 	End Sub
 
+	Private Sub LBoxQueries_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LBoxQueries.SelectedIndexChanged
+		With LBoxQueries
+			If .SelectedIndex >= 0 Then
+				TxQuery.Text = QuerySessionCache.Where(Function(x) x.ExecDate = .GetItemText(.SelectedItem)).Select(Function(x) x.Query).FirstOrDefault
+			End If
+		End With
+	End Sub
+End Class
+
+Friend Class QuerySessionCache
+	Friend Property ExecDate As String
+	Friend Property Query As String
 End Class

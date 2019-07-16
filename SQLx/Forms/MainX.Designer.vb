@@ -59,6 +59,8 @@ Partial Class MainX
 		Me.FdBrowse = New System.Windows.Forms.FolderBrowserDialog()
 		Me.opDialog = New System.Windows.Forms.OpenFileDialog()
 		Me.BgImport = New System.ComponentModel.BackgroundWorker()
+		Me.LBoxQueries = New System.Windows.Forms.ListBox()
+		Me.Label11 = New System.Windows.Forms.Label()
 		Me.panMenu.SuspendLayout()
 		Me.SplitCon.Panel1.SuspendLayout()
 		Me.SplitCon.Panel2.SuspendLayout()
@@ -70,8 +72,10 @@ Partial Class MainX
 		'
 		'panMenu
 		'
-		Me.panMenu.Controls.Add(Me.LbTableRefresh)
 		Me.panMenu.Controls.Add(Me.LbCollapse)
+		Me.panMenu.Controls.Add(Me.Label11)
+		Me.panMenu.Controls.Add(Me.LBoxQueries)
+		Me.panMenu.Controls.Add(Me.LbTableRefresh)
 		Me.panMenu.Controls.Add(Me.LbImport)
 		Me.panMenu.Controls.Add(Me.LbStatus)
 		Me.panMenu.Controls.Add(Me.LBoxTable)
@@ -104,7 +108,7 @@ Partial Class MainX
 		Me.LbTableRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbTableRefresh.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.LbTableRefresh.ForeColor = System.Drawing.Color.Blue
-		Me.LbTableRefresh.Location = New System.Drawing.Point(51, 299)
+		Me.LbTableRefresh.Location = New System.Drawing.Point(51, 251)
 		Me.LbTableRefresh.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbTableRefresh.Name = "LbTableRefresh"
 		Me.LbTableRefresh.Size = New System.Drawing.Size(75, 22)
@@ -120,10 +124,10 @@ Partial Class MainX
 		Me.LbCollapse.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbCollapse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.LbCollapse.ForeColor = System.Drawing.Color.Blue
-		Me.LbCollapse.Location = New System.Drawing.Point(178, 126)
+		Me.LbCollapse.Location = New System.Drawing.Point(174, 126)
 		Me.LbCollapse.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbCollapse.Name = "LbCollapse"
-		Me.LbCollapse.Size = New System.Drawing.Size(22, 22)
+		Me.LbCollapse.Size = New System.Drawing.Size(26, 26)
 		Me.LbCollapse.TabIndex = 16
 		Me.LbCollapse.Text = "<"
 		Me.LbCollapse.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -136,7 +140,7 @@ Partial Class MainX
 		Me.LbImport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.LbImport.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.LbImport.ForeColor = System.Drawing.Color.Blue
-		Me.LbImport.Location = New System.Drawing.Point(125, 299)
+		Me.LbImport.Location = New System.Drawing.Point(125, 251)
 		Me.LbImport.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbImport.Name = "LbImport"
 		Me.LbImport.Size = New System.Drawing.Size(75, 22)
@@ -153,7 +157,7 @@ Partial Class MainX
 		Me.LbStatus.Location = New System.Drawing.Point(0, 126)
 		Me.LbStatus.Margin = New System.Windows.Forms.Padding(0)
 		Me.LbStatus.Name = "LbStatus"
-		Me.LbStatus.Size = New System.Drawing.Size(179, 22)
+		Me.LbStatus.Size = New System.Drawing.Size(175, 26)
 		Me.LbStatus.TabIndex = 15
 		Me.LbStatus.Text = ">> Stand-by <<"
 		Me.LbStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -164,10 +168,10 @@ Partial Class MainX
 		Me.LBoxTable.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.LBoxTable.ForeColor = System.Drawing.Color.Black
 		Me.LBoxTable.FormattingEnabled = True
-		Me.LBoxTable.Location = New System.Drawing.Point(0, 320)
+		Me.LBoxTable.Location = New System.Drawing.Point(0, 272)
 		Me.LBoxTable.Margin = New System.Windows.Forms.Padding(0)
 		Me.LBoxTable.Name = "LBoxTable"
-		Me.LBoxTable.Size = New System.Drawing.Size(200, 132)
+		Me.LBoxTable.Size = New System.Drawing.Size(200, 80)
 		Me.LBoxTable.TabIndex = 13
 		Me.LBoxTable.TabStop = False
 		'
@@ -175,7 +179,7 @@ Partial Class MainX
 		'
 		Me.Label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.Label7.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label7.Location = New System.Drawing.Point(0, 299)
+		Me.Label7.Location = New System.Drawing.Point(0, 251)
 		Me.Label7.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label7.Name = "Label7"
 		Me.Label7.Size = New System.Drawing.Size(52, 22)
@@ -189,10 +193,10 @@ Partial Class MainX
 		Me.LBoxDatabase.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.LBoxDatabase.ForeColor = System.Drawing.Color.Black
 		Me.LBoxDatabase.FormattingEnabled = True
-		Me.LBoxDatabase.Location = New System.Drawing.Point(0, 168)
+		Me.LBoxDatabase.Location = New System.Drawing.Point(0, 172)
 		Me.LBoxDatabase.Margin = New System.Windows.Forms.Padding(0)
 		Me.LBoxDatabase.Name = "LBoxDatabase"
-		Me.LBoxDatabase.Size = New System.Drawing.Size(200, 132)
+		Me.LBoxDatabase.Size = New System.Drawing.Size(200, 80)
 		Me.LBoxDatabase.TabIndex = 1
 		Me.LBoxDatabase.TabStop = False
 		'
@@ -200,7 +204,7 @@ Partial Class MainX
 		'
 		Me.Label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 		Me.Label8.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-		Me.Label8.Location = New System.Drawing.Point(0, 147)
+		Me.Label8.Location = New System.Drawing.Point(0, 151)
 		Me.Label8.Margin = New System.Windows.Forms.Padding(0)
 		Me.Label8.Name = "Label8"
 		Me.Label8.Size = New System.Drawing.Size(200, 22)
@@ -522,6 +526,31 @@ Partial Class MainX
 		'BgImport
 		'
 		'
+		'LBoxQueries
+		'
+		Me.LBoxQueries.BackColor = System.Drawing.Color.White
+		Me.LBoxQueries.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.LBoxQueries.ForeColor = System.Drawing.Color.Black
+		Me.LBoxQueries.FormattingEnabled = True
+		Me.LBoxQueries.Location = New System.Drawing.Point(0, 372)
+		Me.LBoxQueries.Margin = New System.Windows.Forms.Padding(0)
+		Me.LBoxQueries.Name = "LBoxQueries"
+		Me.LBoxQueries.Size = New System.Drawing.Size(200, 80)
+		Me.LBoxQueries.TabIndex = 13
+		Me.LBoxQueries.TabStop = False
+		'
+		'Label11
+		'
+		Me.Label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.Label11.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.Label11.Location = New System.Drawing.Point(0, 351)
+		Me.Label11.Margin = New System.Windows.Forms.Padding(0)
+		Me.Label11.Name = "Label11"
+		Me.Label11.Size = New System.Drawing.Size(200, 22)
+		Me.Label11.TabIndex = 19
+		Me.Label11.Text = "Query History"
+		Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		'
 		'MainX
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -589,4 +618,6 @@ Partial Class MainX
 	Friend WithEvents opDialog As OpenFileDialog
 	Friend WithEvents BgImport As System.ComponentModel.BackgroundWorker
 	Friend WithEvents LbTableRefresh As Label
+	Friend WithEvents LBoxQueries As ListBox
+	Friend WithEvents Label11 As Label
 End Class
