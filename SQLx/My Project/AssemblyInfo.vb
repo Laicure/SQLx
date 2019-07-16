@@ -33,4 +33,4 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyVersion("0.1.0.0")>
 <Assembly: Resources.NeutralResourcesLanguageAttribute("en")>
 <Assembly: AssemblyFileVersion("0.1.0.0")>
-<Assembly: AssemblyInformationalVersion("0.1.0-SQLite.1+54.Branch.SQLite.Sha.1c1f1fe615c9f7c6eddc402b0769d7aea99da281")>
+<Assembly: AssemblyInformationalVersion("0.1.0-SQLite.1+58.Branch.SQLite.Sha.2b62f26ecb4ff3d1e582d51c98eb71d61e1528ee")>
