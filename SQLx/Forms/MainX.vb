@@ -172,7 +172,7 @@ Public Class MainX
 	Private Sub BGgetDetails_DoWork(sender As Object, e As DoWorkEventArgs) Handles BGgetDetails.DoWork
 		Threading.Thread.Sleep(222)
 		If Not String.IsNullOrEmpty(e.Argument.ToString) Then
-			TableList = SQLReadQuery("select Table_Name from INFORMATION_SCHEMA.COLUMNS with (NoLock) where Table_Catalog='" & selectedDatabase & "'", 60, SQLConn, selectedDatabase).AsEnumerable().Select(Function(x) x.Field(Of String)("Table_Name")).Distinct.ToArray
+			TableList = SQLReadQuery("select Table_Name from INFORMATION_SCHEMA.COLUMNS with (NoLock) where Table_Catalog='" & selectedDatabase.Replace("[", "").Replace("]", "") & "'", 60, SQLConn, selectedDatabase.Replace("[", "").Replace("]", "")).AsEnumerable().Select(Function(x) x.Field(Of String)("Table_Name")).Distinct.ToArray
 		Else
 			DatabaseList = SQLReadQuery("SELECT name FROM master.sys.databases with (NoLock) where name not in ('master', 'tempdb', 'model', 'msdb')", 60, SQLConn).AsEnumerable().Select(Function(x) x.Field(Of String)("name")).ToArray
 			TableList = {}
@@ -268,7 +268,7 @@ Public Class MainX
 		LbExecute.Enabled = False
 		TxQuery.ReadOnly = True
 		LbDataCount.Text = "Loading..."
-		BgExecute.RunWorkerAsync({TxQuery.Text.Trim, selectedDatabase})
+		BgExecute.RunWorkerAsync({TxQuery.Text.Trim, selectedDatabase.Replace("[", "").Replace("]", "")})
 
 		If TxQuery.Text.ToLower.Contains("create") Or TxQuery.Text.ToLower.Contains("drop") Then LbTableRefresh_Click(sender, Nothing)
 	End Sub
@@ -286,18 +286,6 @@ Public Class MainX
 			ExecuteData = New DataTable
 			ExecuteData = getdata.Copy
 		End If
-
-		If Not QuerySessionCache.Where(Function(x) x.Query = TxQuery.Text.Trim).Count >= 1 Then
-			QuerySessionCache.Add(New QuerySessionCache With {.ExecDate = Now.ToString("yyyy-MM-dd hh:mm:ss tt", Globalization.CultureInfo.InvariantCulture), .Query = TxQuery.Text.Trim})
-			If QuerySessionCache.Count > 0 Then
-				With LBoxQueries
-					.BeginUpdate()
-					.Items.Clear()
-					.Items.AddRange(QuerySessionCache.Select(Function(x) x.ExecDate).OrderByDescending(Function(y) CDate(y)).ToArray)
-					.EndUpdate()
-				End With
-			End If
-		End If
 	End Sub
 
 	Private Sub BgExecute_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BgExecute.RunWorkerCompleted
@@ -313,6 +301,18 @@ Public Class MainX
 		LbExecute.Text = "Execute"
 		LbExecute.Enabled = True
 		TxQuery.ReadOnly = False
+
+		If Not QuerySessionCache.Where(Function(x) x.Query = TxQuery.Text.Trim).Count >= 1 Then
+			QuerySessionCache.Add(New QuerySessionCache With {.ExecDate = Now.ToString("yyyy-MM-dd hh:mm:ss tt", Globalization.CultureInfo.InvariantCulture), .Query = TxQuery.Text.Trim})
+			If QuerySessionCache.Count > 0 Then
+				With LBoxQueries
+					.BeginUpdate()
+					.Items.Clear()
+					.Items.AddRange(QuerySessionCache.Select(Function(x) x.ExecDate).OrderByDescending(Function(y) CDate(y)).ToArray)
+					.EndUpdate()
+				End With
+			End If
+		End If
 	End Sub
 
 	Private Sub LbExport_Click(sender As Object, e As EventArgs) Handles LbExport.Click
