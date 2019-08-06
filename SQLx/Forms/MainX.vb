@@ -171,7 +171,9 @@ Public Class MainX
 			End If
 
 			With TxQuery
-				TxQuery.Text = .Text.Insert(.SelectionStart, selectedTable)
+				Dim selStart As Integer = .SelectionStart
+				TxQuery.Text = .Text.Insert(selStart, selectedTable)
+				TxQuery.SelectionStart = selStart
 			End With
 		Else
 			selectedTable = ""
@@ -187,7 +189,9 @@ Public Class MainX
 		If LBoxColumn.SelectedIndex >= 0 Then
 			Dim selectedColumn As String = LBoxColumn.GetItemText(LBoxColumn.SelectedItem)
 			With TxQuery
+				Dim selStart As Integer = .SelectionStart
 				TxQuery.Text = .Text.Insert(.SelectionStart, selectedColumn)
+				TxQuery.SelectionStart = selStart
 			End With
 		End If
 	End Sub
