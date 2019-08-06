@@ -83,7 +83,7 @@ Module UnModulatorX
 		End With
 
 		Try
-			wBook = excel.Workbooks.Open(FilePath, , True)
+			wBook = excel.Workbooks.Open(FilePath, 0, True, , , , True)
 			wSheet = wBook.Worksheets(1)
 		Catch ex As Exception
 			wBook.Close(False, Nothing, Nothing)
