@@ -480,6 +480,7 @@ Public Class MainX
 			.EndUpdate()
 		End With
 	End Sub
+
 End Class
 
 Friend Class QuerySessionCache
