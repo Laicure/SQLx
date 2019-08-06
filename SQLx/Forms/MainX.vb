@@ -227,7 +227,9 @@ Public Class MainX
 			selectedTable = LBoxTable.GetItemText(LBoxTable.SelectedItem)
 
 			With TxQuery
-				TxQuery.Text = .Text.Insert(.SelectionStart, selectedTable)
+				Dim selStart As Integer = .SelectionStart
+				TxQuery.Text = .Text.Insert(selStart, selectedTable)
+				TxQuery.SelectionStart = selStart
 			End With
 		Else
 			selectedTable = ""
@@ -451,6 +453,7 @@ Public Class MainX
 			End If
 		End With
 	End Sub
+
 End Class
 
 Friend Class QuerySessionCache
