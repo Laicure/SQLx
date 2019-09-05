@@ -28,9 +28,7 @@ Imports System.Runtime.InteropServices
 '
 ' You can specify all the values or you can default the Build and Revision Numbers
 ' by using the '*' as shown below:
-' <Assembly: AssemblyVersion("0.1.0.0")>
+' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("0.1.0.0")>
+<Assembly: AssemblyVersion("1.0.0.0")>
 <Assembly: Resources.NeutralResourcesLanguageAttribute("en")>
-<Assembly: AssemblyFileVersion("0.1.0.0")>
-<Assembly: AssemblyInformationalVersion("0.1.0-SQLite.1+62.Branch.SQLite.Sha.1302157322ef12776859c13998c6921628d11144")>
