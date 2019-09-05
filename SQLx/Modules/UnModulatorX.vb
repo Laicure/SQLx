@@ -26,8 +26,6 @@ Module UnModulatorX
 
 		Dim arrX(dtxx.Rows.Count, dtxx.Columns.Count) As Object
 
-		wSheet.Columns.NumberFormat = "@"
-
 		For r As Integer = 0 To dtxx.Rows.Count - 1
 			dr = dtxx.Rows(r)
 			For c As Integer = 0 To dtxx.Columns.Count - 1
