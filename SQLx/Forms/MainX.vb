@@ -4,7 +4,7 @@ Public Class MainX
 	Dim errx() As String = {}
 	Friend selectedDatabase As String = ""
 	Friend selectedTable As String = ""
-	Dim ExecuteData As New DataTable
+	Private ExecuteData As New DataTable
 	Private ReadOnly ExecuteBSData As New BindingSource
 	Dim DatabaseList() As String = {}
 	Dim TableList() As String = {}
